@@ -2041,3 +2041,98 @@ public:
 ```
 
 ![image-20251119234926146](./top-100-liked.assets/image-20251119234926146.png)
+
+#### [46. 全排列](https://leetcode.cn/problems/permutations/)
+
+思路：以 “逐位固定元素” 为逻辑主线，从数组的第`x`位开始，通过循环让`x`位依次与自身及后续位置的元素交换，将交换后的数组传入下一层递归处理`x+1`位，当递归到最后一位（`x == nums.size()-1`）时，当前数组即为一个完整排列并加入结果集；递归返回后再将元素交换回原位置（回溯），保证后续循环能尝试其他元素组合，最终通过这种 “固定 - 递归 - 回溯” 的模式遍历出所有可能的排列组合。
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        dfs(nums, 0);
+        return res;
+    }
+private:
+    vector<vector<int>> res;
+    void dfs(vector<int> nums, int x) {
+        if (x == nums.size() - 1) {
+            res.push_back(nums);
+            return;
+        }
+        for (int i = x; i < nums.size(); i++) {
+            swap(nums[i], nums[x]); 
+            dfs(nums, x + 1); 
+            swap(nums[i], nums[x]);
+        }
+    }
+};
+```
+
+![image-20251123232505435](./top-100-liked.assets/image-20251123232505435.png)
+
+#### [78. 子集](https://leetcode.cn/problems/subsets/)
+
+思路：子集是 “所有可能的元素组合（含空集）”，用回溯遍历 “选当前元素” 和 “不选当前元素” 两种分支，全程收集路径即得所有子集。
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> ans;
+        vector<int> path;
+
+        auto dfs = [&](this auto&& dfs, int i) -> void {
+            ans.emplace_back(path);
+            for (int j = i; j < n; j++) {
+                path.push_back(nums[j]);
+                dfs(j + 1);
+                path.pop_back();
+            }
+        };
+
+        dfs(0);
+        return ans;
+    }
+};
+```
+
+![image-20251125234521863](./top-100-liked.assets/image-20251125234521863.png)
+
+#### [17. 电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
+
+思路：**通过深度优先搜索（DFS）结合回溯法，遍历所有可能的字母组合**：借助预定义的数字 - 字母映射表，从第一个数字开始，为每个数字依次选取其对应的字母填入路径，递归处理下一位数字；当路径长度等于数字串长度时，即生成一个完整组合并保存；遍历完当前数字的所有字母后自动回溯，继续探索其他组合可能，最终穷举所有合法的字母组合。
+
+```c++
+class Solution {
+    static constexpr string MAPPING[10] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+public:
+    vector<string> letterCombinations(string digits) {
+        int n = digits.length();
+        if (n == 0) {
+            return {};
+        }
+
+        vector<string> ans;
+        string path(n, 0);
+        
+        auto dfs = [&](this auto&& dfs, int i) -> void {
+            if (i == n) {
+                ans.emplace_back(path);
+                return;
+            }
+            for (char c : MAPPING[digits[i] - '0']) {
+                path[i] = c; // 直接覆盖
+                dfs(i + 1);
+            }
+        };
+
+        dfs(0);
+        return ans;
+    }
+};
+```
+
+![image-20251125234907691](./top-100-liked.assets/image-20251125234907691.png)
