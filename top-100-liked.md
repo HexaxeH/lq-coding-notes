@@ -2136,3 +2136,53 @@ public:
 ```
 
 ![image-20251125234907691](./top-100-liked.assets/image-20251125234907691.png)
+
+#### [39. 组合总和](https://leetcode.cn/problems/combination-sum/)
+
+思路：枚举所有可能的组合，但需要避免重复组合。
+
+1. **排序无关**：由于 `candidates` 无重复，且组合不考虑顺序通过「固定选择顺序」避免重复 —— 只从当前元素或其后的元素中选择（即不回头选前面的元素）；
+
+2. 回溯框架
+
+   每个元素有两个选择：
+
+   - 不选当前元素：直接跳过，递归处理下一个元素；
+   - 选当前元素：将其加入路径，递归处理「同一元素（可重复选）」，处理完后撤销选择（恢复现场）；
+
+3. 终止条件
+
+   - 当剩余目标值 `left == 0`：找到合法组合，将路径加入答案；
+   - 当索引越界（`i == candidates.size()`）或剩余目标值为负（`left < 0`）：组合无效，直接返回。
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> path;
+
+        auto dfs = [&](this auto&& dfs, int i, int left) {
+            if (left == 0) {
+                ans.push_back(path);
+                return;
+            }
+
+            if (i == candidates.size() || left < 0) {
+                return;
+            }
+            // 不选
+            dfs(i + 1, left);
+            // 选
+            path.push_back(candidates[i]);
+            dfs(i, left - candidates[i]);
+            path.pop_back();
+        };
+
+        dfs(0, target);
+        return ans;
+    }
+};
+```
+
+![image-20251127225718081](./top-100-liked.assets/image-20251127225718081.png)
