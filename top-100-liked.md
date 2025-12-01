@@ -2186,3 +2186,37 @@ public:
 ```
 
 ![image-20251127225718081](./top-100-liked.assets/image-20251127225718081.png)
+
+#### [22. 括号生成](https://leetcode.cn/problems/generate-parentheses/)
+
+思路：枚举当前位置填左括号还是右括号，递归的过程中，要保证右括号的个数不能超过左括号的个数。如果现在右括号个数等于左括号个数，那么不能填右括号。如果现在右括号个数小于左括号个数，那么可以填右括号。由于左括号个数始终 ≥ 左括号个数，所以当我们填了 n 个右括号时，也一定填了 n 个左括号，此时填完所有 2n 个括号。
+
+```c++
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        string path(n * 2, ' ');
+        
+        function<void(int, int)> dfs = [&](int left, int right) {
+            if (right == n) {
+                ans.push_back(path);
+                return;
+            }
+            if (left < n) {
+                path[left + right] = '(';
+                dfs(left + 1, right);
+            }
+            if (right < left) {
+                path[left + right] = ')';
+                dfs(left, right + 1);
+            }
+        };
+
+        dfs(0, 0);
+        return ans;
+    }
+};
+```
+
+![image-20251201221745068](./top-100-liked.assets/image-20251201221745068.png)
