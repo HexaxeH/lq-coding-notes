@@ -2220,3 +2220,97 @@ public:
 ```
 
 ![image-20251201221745068](./top-100-liked.assets/image-20251201221745068.png)
+
+#### [79. 单词搜索](https://leetcode.cn/problems/word-search/)
+
+思路：先遍历矩阵每个单元格作为 DFS 起点，对每个起点通过递归探索上下左右四个方向，递归中先校验当前矩阵字符是否与目标字符串对应位置匹配，若匹配且已到字符串末尾则匹配成功，若未到末尾则将当前单元格标记为已访问（避免重复使用）后继续探索四方向，若所有方向探索失败则回溯恢复当前单元格原字符（不影响后续起点探索），只要任一起点的 DFS 找到完整匹配路径就返回 true，所有起点均失败则返回 false。
+
+```c++
+class Solution {
+    int dirs[4][2]= {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        int m = board.size(), n = board[0].size();
+        function<bool(int,int,int)>dfs;
+        dfs = [&](int i, int j, int k) -> bool {
+            if (board[i][j] != word[k]) { 
+                return false;
+            }
+            if (k + 1 == word.length()) { 
+                return true;
+            }
+            board[i][j] = 0; 
+            for (int d=0;d<4;d++) {
+                int x = i + dirs[d][0], y = j + dirs[d][1];
+                if (0 <= x && x < m && 0 <= y && y < n && dfs(x, y, k + 1)) {
+                    return true; 
+                }
+            }
+            board[i][j] = word[k]; 
+            return false;
+        };
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (dfs(i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+```
+
+![image-20251204213901659](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251204213901659.png)
+
+[131. 分割回文串](https://leetcode.cn/problems/palindrome-partitioning/)
+
+思路：
+
+```c++
+class Solution {
+private:
+//检验是否是回文
+    bool isPalindrome(const string& s, int left, int right) {
+        while(left<right){
+            if(s[left]!=s[right]){
+            return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+public:
+    vector<vector<string>> partition(string s) {
+        int strLen = s.size();
+        vector<vector<string>> result; // 存储合法的分割方案
+        vector<string> currentPath; // 存储当前正在尝试的分割路径
+        function<void(int, int)> dfs;
+        dfs = [&](int currentIdx,int substrStart){
+             if (currentIdx == strLen) {
+                result.push_back(currentPath); //加入结果集
+                return;
+            }
+            //不分割
+            if (currentIdx < strLen - 1) {
+                dfs(currentIdx + 1, substrStart);
+            }
+            //分割
+            if (isPalindrome(s, substrStart, currentIdx)) {
+                //加入当前路径
+                string palindromeSubstr = s.substr(substrStart, currentIdx - substrStart + 1);
+                currentPath.push_back(palindromeSubstr);
+                //处理下一个字符
+                dfs(currentIdx + 1, currentIdx + 1);
+                // 回溯
+                currentPath.pop_back();
+            }
+        };
+        dfs(0, 0);
+        return result;
+    }
+};
+```
+
+![image-20251204232514144](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251204232514144.png)
