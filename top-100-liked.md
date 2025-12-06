@@ -2314,3 +2314,32 @@ public:
 ```
 
 ![image-20251204232514144](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251204232514144.png)
+
+#### [74. 搜索二维矩阵](https://leetcode.cn/problems/search-a-2d-matrix/)
+
+思路：先确定矩阵的行数 `m` 和列数 `n`，把整个矩阵看作长度为 `m*n` 的一维有序数组，设置二分查找的左边界 `left=0`、右边界 `right=m*n-1`；在循环中计算中间下标 `mid`，利用 `mid/n` 得到二维矩阵中的行下标、`mid%n` 得到列下标，从而取出对应位置的元素与目标值比较，若元素等于目标值则直接返回 `true`，若元素大于目标值则调整右边界缩小到左半区间，若元素小于目标值则调整左边界缩小到右半区间；当循环结束（`left>right`）仍未找到目标值时，返回 `false`。
+
+```c++
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size(), n = matrix[0].size();
+        int left = 0, right = m * n-1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int x = matrix[mid / n][mid % n];
+            if (x == target) {
+                return true;
+            }
+            if (x > target){
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return false;
+    }
+};
+```
+
+![image-20251207012802776](./top-100-liked.assets/image-20251207012802776.png)
