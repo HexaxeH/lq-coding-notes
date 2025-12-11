@@ -2343,3 +2343,36 @@ public:
 ```
 
 ![image-20251207012802776](./top-100-liked.assets/image-20251207012802776.png)
+
+#### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
+
+思路：用`lower_bound`函数，通过二分法找到数组中第一个大于等于目标值的下标作为起始位置，若该位置越界或对应元素不等于目标值，则直接返回`{-1, -1}`表示目标值不存在；若存在，则再次调用`lower_bound`查找第一个大于等于`target+1`的下标，将其减 1 即为目标值的最后一个位置，最终返回起止下标组成的结果
+
+```c++
+class Solution {
+    int lower_bound(vector<int>& nums, int target){
+        int left = 0, right = nums.size()-1;
+        while (left <= right) { 
+            int mid = left + (right - left) / 2;
+            if (nums[mid] >= target) {
+                right = mid - 1; 
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int start = lower_bound(nums, target);
+        if (start == nums.size() || nums[start] != target) {
+            return {-1, -1};
+        }
+
+        int end = lower_bound(nums, target + 1) - 1;
+        return {start, end};
+    }
+};
+```
+
+![image-20251212000932395](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251212000932395.png)
