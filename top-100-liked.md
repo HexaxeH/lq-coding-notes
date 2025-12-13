@@ -2376,3 +2376,49 @@ public:
 ```
 
 ![image-20251212000932395](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251212000932395.png)
+
+#### [33. 搜索旋转排序数组](https://leetcode.cn/problems/search-in-rotated-sorted-array/)
+
+思路：先通过二分法定位数组旋转点（即最小值下标），将原无序数组拆分为两个升序子区间，再根据目标值与数组末尾元素的大小关系，判断目标值所属的升序子区间，最后在对应子区间内用开区间二分查找精准定位目标值；其中`findMin`函数以数组末尾元素为锚点，通过收缩左右边界找到旋转点，`lower_bound`函数则在指定升序子区间内完成目标值查找
+
+```c++
+class Solution {
+    int findMin(vector<int>& nums) {
+        int left = -1, right = nums.size() - 1; // 开区间
+        while (left + 1 < right) { 
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < nums.back()) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+        return right;
+    }
+
+    // 有序数组中找 target 的下标
+    int lower_bound(vector<int>& nums, int left, int right, int target) {
+        while (left + 1 < right) { 
+            int mid = left + (right - left) / 2;
+            if (nums[mid] >= target) {
+                right = mid;
+            } else {
+                left = mid; 
+            }
+        }
+        return nums[right] == target ? right : -1;
+    }
+
+public:
+    int search(vector<int>& nums, int target) {
+        int i = findMin(nums);
+        if (target > nums.back()) { //第一段
+            return lower_bound(nums, -1, i, target); 
+        }
+        //第二段
+        return lower_bound(nums, i - 1, nums.size(), target); 
+    }
+};
+```
+
+![image-20251213184325217](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251213184325217.png)
