@@ -2375,7 +2375,7 @@ public:
 };
 ```
 
-![image-20251212000932395](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251212000932395.png)
+![image-20251212000932395](./top-100-liked.assets/image-20251212000932395.png)
 
 #### [33. 搜索旋转排序数组](https://leetcode.cn/problems/search-in-rotated-sorted-array/)
 
@@ -2421,4 +2421,24 @@ public:
 };
 ```
 
-![image-20251213184325217](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251213184325217.png)
+![image-20251213184325217](./top-100-liked.assets/6b325dad8b448e95b957855ca345c4dd.pngimage-20251213184325217.png)
+
+#### [153. 寻找旋转排序数组中的最小值](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/)
+
+思路：用二分，初始化左边界为 - 1、右边界为数组最后一个元素下标，以数组末尾元素为锚点，通过循环收缩边界（若中间值小于末尾元素，说明最小值在左半区，将右边界移至中间位置；否则将左边界移至中间位置），直到区间内仅剩一个元素（left+1=right），此时右边界指向的元素即为数组最小值
+
+```c++
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int left = -1, right = nums.size() - 1;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            (nums[mid] < nums.back() ? right : left) = mid;
+        }
+        return nums[right];
+    }
+};
+```
+
+![image-20251213192329160](./top-100-liked.assets/image-20251213192329160.png)
