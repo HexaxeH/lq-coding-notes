@@ -2442,3 +2442,44 @@ public:
 ```
 
 ![image-20251213192329160](./top-100-liked.assets/image-20251213192329160.png)
+
+#### [155. 最小栈](https://leetcode.cn/problems/min-stack/)
+
+思路：用一个栈存储 “当前值 + 栈内最小值” 的键值对，初始化时向栈中压入哨兵元素`(0, INT_MAX)`避免空栈判断，每次入栈时同步记录当前栈的最小值，出栈时自动丢弃对应最小值。`emplace` 是 STL 容器（如 `stack`、`vector`、`map` 等）提供的成员函数，核心作用是**在容器中直接构造元素**，而非先创建元素再拷贝 / 移动到容器中，相比 `push` 更高效。
+
+```c++
+class MinStack {
+    stack<pair<int,int>> st;
+public:
+    MinStack() {
+        st.emplace(0, INT_MAX);
+    }
+    
+    void push(int val) {
+        st.emplace(val, min(getMin(), val)); 
+    }
+    
+    void pop() {
+        st.pop();
+    }
+    
+    int top() {
+        return st.top().first;
+    }
+    
+    int getMin() {
+        return st.top().second;
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(val);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
+```
+
+![image-20251215142230652](./top-100-liked.assets/image-20251215142230652.png)
