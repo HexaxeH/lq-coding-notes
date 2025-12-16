@@ -2483,3 +2483,49 @@ public:
 ```
 
 ![image-20251215142230652](./top-100-liked.assets/image-20251215142230652.png)
+
+#### [394. 字符串解码](https://leetcode.cn/problems/decode-string/)
+
+思路：用栈保存嵌套解码的上下文（前缀字符串 + 重复次数），逐字符处理实现解码：
+
+1. **字母**：直接追加到当前字符串`res`；
+2. **数字**：累积计算重复次数`k`（处理多位数）；
+3. **左括号`[`**：将当前`res`和`k`入栈，重置`res`和`k`，准备处理括号内子串；
+4. **右括号`]`**：出栈获取前缀和重复次数，将当前`res`（括号内子串）重复指定次数后，拼接到前缀上，更新为新的`res`；
+5. 遍历结束后，`res`即为解码结果。
+
+```c++
+class Solution {
+public:
+    string decodeString(string s) {
+         stack<pair<string, int>> stk;
+        string res; 
+        int k = 0; 
+        
+        for (char c : s) {
+            if (isalpha(c)) {
+                res += c;
+            } else if (isdigit(c)) {
+                k = k * 10 + (c - '0');
+            } else if (c == '[') {
+                stk.push(make_pair(move(res), k));
+                k = 0;
+                res.clear(); 
+            } else { 
+                pair<string, int> top_pair = stk.top();
+                stk.pop();
+                string pre_res = top_pair.first; 
+                int pre_k = top_pair.second;  
+                string repeated_str;
+                for (int i = 0; i < pre_k; ++i) {
+                    repeated_str += res;
+                }
+                res = pre_res + repeated_str;
+            }
+        }
+        return res;
+    }
+};
+```
+
+![image-20251216195308937](./top-100-liked.assets/image-20251216195308937.png)
