@@ -2529,3 +2529,31 @@ public:
 ```
 
 ![image-20251216195308937](./top-100-liked.assets/image-20251216195308937.png)
+
+[739. 每日温度](https://leetcode.cn/problems/daily-temperatures/)
+
+思路：先初始化与温度数组等长的结果数组`ans`，借助栈存储温度数组的索引（栈内索引对应温度保持单调递增）；从数组末尾向前遍历每个温度，若当前温度大于等于栈顶索引对应的温度，则持续弹出栈顶元素（这些元素无法成为当前位置的 “更暖天”），直到栈为空或找到更大温度的索引；此时若栈非空，当前位置的结果即为栈顶索引与当前索引的差值（即距离下一个更暖天的天数），若栈空则结果为 0；最后将当前索引压入栈，供前面的元素计算使用，遍历完成后`ans`数组即为每个位置对应下一个更暖天的天数。
+
+```c++
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n = temperatures.size();
+        vector<int> ans(n);
+        stack<int> st;
+        for (int i = n - 1; i >= 0; i--) {
+            int t = temperatures[i];
+            while (!st.empty() && t >= temperatures[st.top()]) {
+                st.pop();
+            }
+            if (!st.empty()) {
+                ans[i] = st.top() - i;
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+};
+```
+
+![image-20251217221016744](./top-100-liked.assets/image-20251217221016744.png)
