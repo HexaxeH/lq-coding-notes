@@ -2556,4 +2556,20 @@ public:
 };
 ```
 
-![image-20251217221016744](./top-100-liked.assets/image-20251217221016744.png)
+![image-20251220195852900](./top-100-liked.assets/image-20251220195852900.png)
+
+#### [215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
+
+思路：使用编程语言的内置排序算法对数组 `nums` 进行排序，然后返回第 *N*−*k* 个元素即可。
+
+```c++
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        return nums[nums.size() - k];
+    }
+};
+```
+
+![image-20251220200431391](./top-100-liked.assets/image-20251220200431391.png)
