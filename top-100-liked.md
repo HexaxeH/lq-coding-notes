@@ -2604,3 +2604,38 @@ public:
 ```
 
 ![image-20251220201303815](./top-100-liked.assets/image-20251220201303815.png)
+
+#### [347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
+
+思路：通过哈希表统计数组中各元素的出现频率，因哈希表无法直接按频率排序，故将 “元素 - 频率” 键值对转存至二维数组，为排序做准备；随后通过自定义排序规则sort，按频率降序排列二维数组，使高频元素前置；最后直接提取排序后前 k 个元素，即可得到前 k 个高频元素的答案。
+
+```c++
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> freqMap;
+        for (int num:nums) {
+            freqMap[num]++;
+        }
+
+        vector<vector<int>> elemFreq; 
+        for (auto it = freqMap.begin(); it != freqMap.end(); it++) {
+            elemFreq.push_back({it->first, it->second});
+        }
+
+        // 按出现频率降序排列
+        sort(elemFreq.begin(), elemFreq.end(), [](const vector<int>& a, const vector<int>& b) {
+            return a[1] > b[1];
+        });
+
+        vector<int> res;
+        for (int i = 0; i < k; i++) {
+            res.push_back(elemFreq[i][0]);
+        }
+
+        return res;
+    }
+};
+```
+
+![image-20260102020325399](./top-100-liked.assets/image-20260102020325399.png)
