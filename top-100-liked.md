@@ -2664,3 +2664,31 @@ public:
 ```
 
 ![image-20260102021431689](./top-100-liked.assets/image-20260102021431689.png)
+
+#### [45. 跳跃游戏 II](https://leetcode.cn/problems/jump-game-ii/)
+
+思路：
+
+```c++
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int cur_right = 0,cur_left=0,ans=0; 
+
+        while(cur_right < nums.size()-1){
+            int l=cur_left,r=cur_right;
+            
+            for (int i = l; i <= r; i++) {
+                if (nums[i]+i > cur_right) { 
+                cur_right = nums[i]+i; 
+                cur_left -i;
+            }
+        }
+        ans++;
+        }
+        return ans;
+    }
+};
+```
+
+![image-20260103154802089](./top-100-liked.assets/image-20260103154802089.png)
