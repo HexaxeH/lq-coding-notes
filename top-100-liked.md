@@ -2639,3 +2639,28 @@ public:
 ```
 
 ![image-20260102020325399](./top-100-liked.assets/image-20260102020325399.png)
+
+#### [55. 跳跃游戏](https://leetcode.cn/problems/jump-game/)
+
+思路：从数组终点反向回溯，维护一个 “当前需要到达的目标位置”`idx`，初始时`idx`设为数组最后一个元素的索引，随后从终点前一个位置开始从后往前遍历数组，若当前位置`i`的最远可达位置（`nums[i]+i`）能覆盖`idx`，就将`idx`更新为`i`，这意味着只要能到达`i`就能间接到达原目标，遍历结束后只需判断`idx`是否等于起点索引`0`，若是则说明可以从起点跳到终点，返回`true`，否则返回`false`。
+
+```c++
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int n = nums.size();
+        int idx = n - 1;
+        for(int i = n - 2; i >= 0; i--)
+        {
+            if(nums[i] + i >= idx)
+                idx = i;
+        }
+        if(idx == 0)
+            return true;
+        else
+            return false;
+    }
+};
+```
+
+![image-20260102021431689](./top-100-liked.assets/image-20260102021431689.png)
