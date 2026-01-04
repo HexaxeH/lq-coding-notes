@@ -2669,6 +2669,13 @@ public:
 
 思路：
 
+1. `cur_left`（当前跳跃层级的左边界）、`cur_right`（当前跳跃层级的右边界）、`ans`（记录最少跳跃次数，初始为 0），其中当前层级的区间 `[cur_left, cur_right]` 表示 “通过 `ans` 次跳跃能到达的所有位置”；
+2. 循环终止条件为 `cur_right < nums.size()-1`，即只要当前层级的最远右边界还未覆盖数组终点，就需要继续跳跃；
+3. 每次循环先保存当前层级的边界 `l=cur_left`、`r=cur_right`，避免后续更新边界影响遍历；
+4. 遍历当前层级的所有位置 `[l, r]`，计算每个位置 `i` 的最远可达位置 `nums[i]+i`，并不断更新 `cur_right` 为当前层级能延伸到的**最远右边界**（这是贪心的核心：每一次跳跃都要选择能跳得最远的位置，以最小化跳跃次数），同时代码中 `cur_left = i`（原代码笔误为 `cur_left -i`）的作用是更新下一层级的左边界为当前层级的右边界 + 1（本质是下一次跳跃的起始位置区间左端点）；
+5. 当遍历完当前层级的所有位置，找到该层级能到达的最远右边界后，说明完成了一次有效跳跃，将 `ans` 加 1，进入下一层级的探索；
+6. 当 `cur_right` 覆盖数组终点时，循环终止，返回 `ans` 即为最少跳跃次数。
+
 ```c++
 class Solution {
 public:
@@ -2692,3 +2699,36 @@ public:
 ```
 
 ![image-20260103154802089](./top-100-liked.assets/image-20260103154802089.png)
+
+#### [763. 划分字母区间](https://leetcode.cn/problems/partition-labels/)
+
+思路：
+
+1. 先遍历一次字符串，用长度为 26 的数组 `last` 记录每个小写字母在 `s` 中**最后一次出现的索引位置**，为后续确定片段边界提供依据（因为 26 个小写字母是固定集合，该数组空间开销为常数级）；
+2. 再次遍历字符串，维护两个变量 `start`（当前片段的起始索引）和 `end`（当前片段的最远结束索引），遍历过程中不断更新 `end` 为 “当前字符的最后出现位置” 和 “当前 `end`” 的较大值（确保当前片段包含所有已遍历字符的全部出现），当遍历到 `i == end` 时，说明当前片段已达到最大有效边界，记录该片段长度并更新 `start`，开始下一个片段的划分。
+
+```c++
+class Solution {
+public:
+    vector<int> partitionLabels(string s) {
+        int n=s.size();
+        int last[26];
+        for(int i=0;i<n;i++){
+            last[s[i]-'a'] = i;
+        }
+
+        vector<int> ans;
+        int start =0,end = 0;
+        for(int i=0 ; i<n ; i++){
+            end = max(end,last[s[i]-'a']);
+            if(end == i){
+                ans.push_back(end-start+1);
+                start = i+1;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+![image-20260104164728836](./top-100-liked.assets/image-20260104164728836.png)
