@@ -2732,3 +2732,32 @@ public:
 ```
 
 ![image-20260104164728836](./top-100-liked.assets/image-20260104164728836.png)
+
+#### [198. 打家劫舍](https://leetcode.cn/problems/house-robber/)
+
+思路：抓住 “不能抢相邻房屋” 的核心限制，确定用动态规划拆解子问题，接着定义`dp[i]`表示前`i+1`间房屋（索引`0~i`）能抢到的最大金额，再处理边界情况 ——1 间房时`dp[0]=nums[0]`，2 间房时`dp[1]=max(nums[0],nums[1])`，然后推导状态转移逻辑：遍历到第`i`间房（`i≥2`）时，有抢和不抢两种选择，不抢则继承前`i-1`间的最优解`dp[i-1]`，抢则只能叠加前`i-2`间的最优解`dp[i-2]`和当前房金额`nums[i]`，取两者最大值作为`dp[i]`，最后递推到最后一间房，`dp[n-1]`就是答案。
+
+```c++
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if(nums.size() == 0)
+        return 0;
+        
+        if(nums.size() == 1)
+        return nums[0];
+
+        int n = nums.size();
+        vector<int> dp(n,0);
+        dp[0] = nums[0];
+        dp[1] = max(nums[0],nums[1]);
+
+        for(int i = 2; i < n ;i++){
+            dp[i] = max(dp[i-1],dp[i-2]+nums[i]);
+        }
+        return dp[n-1];
+    }
+};
+```
+
+![image-20260104175409300](./top-100-liked.assets/image-20260104175409300.png)
