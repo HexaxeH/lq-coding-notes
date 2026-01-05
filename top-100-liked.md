@@ -2764,22 +2764,49 @@ public:
 
 #### [279. 完全平方数](https://leetcode.cn/problems/perfect-squares/)
 
-思路：`dp[i]`表示组成整数`i`所需的最小完全平方数个数，随后创建长度为`n+1`、初始值为 0 的`dp`数组，外层遍历从 1 到`n`的每个整数`i`，先将`dp[i]`初始化为最坏情况`i`（即全部用`1^2`累加组成`i`，需要`i`个），再通过内层循环遍历所有满足`j^2 ≤ i`的正整数`j`，利用状态转移方程`dp[i] = min(dp[i], dp[i-j*j]+1)`更新最小值（其中`dp[i-j*j]`是组成`i-j^2`的最小个数，加 1 对应加上`j^2`这个完全平方数），最终遍历完成后。
+思路：完全背包问题的变形，完全平方数是可重复选取的“物品”，目标整数`n`是“背包容量”，解题核心是用动态规划求最少“物品数”；接着定义`dp[i]`表示组成整数`i`的最小完全平方数个数，创建长度为`n+1`的`dp`数组并初始化为`INT_MAX`，设置`dp[0]=0`作为边界条件；然后遍历所有不大于`√n`的正整数`num`（对应`num*num`这个完全平方数），再正序遍历0到`n`的整数`i`，当`i≥num*num`时，用`dp[i-num*num]+1`更新`dp[i]`的最小值；最终`dp[n]`就是所求答案。
 
 ```c++
 class Solution {
 public:
     int numSquares(int n) {
-        vector<int> dp (n+1,0);
-        for(int i = 1; i <= n; i++){
-            dp[i] = i;
-            for(int j = 1;i-j*j >=0;j++){
-                dp[i] = min(dp[i] , dp[i-j*j]+1);
+        vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0;
+        for (int num = 1; num <= sqrt(n); num++)
+        {
+            for (int i = 0; i <= n; i++)
+            {
+                if (i >= num * num)
+                dp[i] = min(dp[i], dp[i - num * num] + 1);
             }
-        }
-        return dp[n];
+         }
+    return dp[n];
     }
 };
 ```
 
-![image-20260105200627355](./top-100-liked.assets/image-20260105200627355.png)
+![image-20260105213010322](./top-100-liked.assets/image-20260105213010322.png)
+
+#### [322. 零钱兑换](https://leetcode.cn/problems/coin-change/)
+
+思路：`dp[i]`表示凑成金额`i`所需的最小硬币数，先创建长度为`amount+1`的`long long`型`dp`数组并初始化为`INT_MAX`（表示初始状态下无法凑成对应金额），同时设置边界条件`dp[0]=0`（凑金额 0 不需要任何硬币）；接着先遍历每种硬币，再正序遍历所有金额（正序遍历允许硬币重复使用，符合完全背包特性），当当前硬币面值小于等于目标金额`i`时，通过状态转移方程`dp[i] = min(dp[i], dp[i-coin]+1)`更新最小值（`dp[i-coin]`是凑成`i-coin`的最小硬币数，加 1 对应添加当前这枚硬币）；最后判断`dp[amount]`是否仍为`INT_MAX`，若是则返回 - 1 表示无法凑成目标金额，否则返回`dp[amount]`即为最少硬币数。
+
+```c++
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<long long> dp(amount+1 , INT_MAX);
+        dp[0] = 0;
+        for(int coin : coins){
+            for(int i = 0;i <= amount;i++){
+                if(coin <= i){
+                    dp[i] = min(dp[i] , dp[i-coin] + 1);
+                }
+            }
+        }
+        return dp[amount] == INT_MAX ? -1 : dp[amount];
+    }
+};
+```
+
+![image-20260105211854982](./top-100-liked.assets/image-20260105211854982.png)
