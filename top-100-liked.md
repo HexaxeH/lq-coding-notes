@@ -2761,3 +2761,25 @@ public:
 ```
 
 ![image-20260104175409300](./top-100-liked.assets/image-20260104175409300.png)
+
+#### [279. 完全平方数](https://leetcode.cn/problems/perfect-squares/)
+
+思路：`dp[i]`表示组成整数`i`所需的最小完全平方数个数，随后创建长度为`n+1`、初始值为 0 的`dp`数组，外层遍历从 1 到`n`的每个整数`i`，先将`dp[i]`初始化为最坏情况`i`（即全部用`1^2`累加组成`i`，需要`i`个），再通过内层循环遍历所有满足`j^2 ≤ i`的正整数`j`，利用状态转移方程`dp[i] = min(dp[i], dp[i-j*j]+1)`更新最小值（其中`dp[i-j*j]`是组成`i-j^2`的最小个数，加 1 对应加上`j^2`这个完全平方数），最终遍历完成后。
+
+```c++
+class Solution {
+public:
+    int numSquares(int n) {
+        vector<int> dp (n+1,0);
+        for(int i = 1; i <= n; i++){
+            dp[i] = i;
+            for(int j = 1;i-j*j >=0;j++){
+                dp[i] = min(dp[i] , dp[i-j*j]+1);
+            }
+        }
+        return dp[n];
+    }
+};
+```
+
+![image-20260105200627355](./top-100-liked.assets/image-20260105200627355.png)
