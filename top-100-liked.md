@@ -2810,3 +2810,68 @@ public:
 ```
 
 ![image-20260105211854982](./top-100-liked.assets/image-20260105211854982.png)
+
+#### [139. 单词拆分](https://leetcode.cn/problems/word-break/)
+
+思路： `dp[i]` 表示字符串 `s` 的前 `i` 个字符是否可以被拆分为字典中的单词， `dp[0] = true`（空字符串默认可拆分）；然后遍历字符串的每个位置 `i`，对于每个位置都遍历字典中的所有单词，若当前位置 `i` 是可拆分的（`dp[i] = true`），且从 `i` 开始截取与当前单词长度相同的子串和该单词完全匹配，就将 `dp[i + 单词长度]` 标记为 `true`（表示前 `i + 单词长度` 个字符可拆分）；最终通过 `dp[n]`（`n` 为字符串总长度）的值判断整个字符串是否能被拆分。
+
+```c++
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
+        int m = wordDict.size();
+        vector<bool> dp(n+1,false);
+        dp[0] = true;
+        int cur_len = 0;
+        
+        for(int i = 0;i < n;i++){
+
+            for(int j =0;j < m;j++){
+                // 获取当前单词的长度
+                cur_len = wordDict[j].size();
+                
+                if(i + cur_len <= n && dp[i]){
+                    string sub = s.substr(i,cur_len);
+                    if(sub == wordDict[j]){
+                        dp[i+cur_len] = true;
+                    }   
+                }
+            }
+        }
+        return dp[n];
+    }
+};
+```
+
+![image-20260106191543982](./top-100-liked.assets/image-20260106191543982.png)
+
+#### [300. 最长递增子序列](https://leetcode.cn/problems/longest-increasing-subsequence/)
+
+思路：用 `dp[i]` 表示以数组第 `i` 个元素结尾的最长递增子序列的长度：首先初始化 `dp` 数组所有元素为 1，同时初始化最大长度 `max_len` 为 1；接着从第二个元素开始遍历数组，对于每个元素 `nums[i]`，向前遍历所有下标小于 `i` 的元素 `nums[j]`，若 `nums[j] < nums[i]`，说明可以将 `nums[i]` 接在以 `nums[j]` 结尾的递增子序列后，此时更新 `dp[i]` 为 `dp[i]` 和 `dp[j]+1` 中的较大值；遍历完所有元素后，再次遍历 `dp` 数组，找出其中的最大值，该值即为整个数组的最长递增子序列长度。
+
+```c++
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, 1);
+        int max_len = 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    dp[i] = max(dp[i], dp[j]+1);
+                }
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            max_len = max(max_len, dp[i]);
+        }
+
+        return max_len;
+    }
+};
+```
+
+![image-20260106194021257](./top-100-liked.assets/image-20260106194021257.png)
