@@ -2875,3 +2875,33 @@ public:
 ```
 
 ![image-20260106194021257](./top-100-liked.assets/image-20260106194021257.png)
+
+#### [152. 乘积最大子数组](https://leetcode.cn/problems/maximum-product-subarray/)
+
+思路：由于负数相乘可能让原本的最小值变为最大值，因此不能仅维护以当前元素结尾的子数组最大乘积，还需同步维护最小乘积；定义`dp_max[i]`为以第`i`个元素结尾的子数组最大乘积、`dp_min[i]`为对应最小乘积，状态转移时，两者均需从「当前元素本身」「前一轮最大乘积 × 当前元素」「前一轮最小乘积 × 当前元素」三者中取极值（`dp_max[i]`取最大、`dp_min[i]`取最小）；用两个变量滚动记录当前的最大、最小乘积，同时用一个变量记录遍历过程中的全局最大乘积；最后处理空数组返回 0、单元素数组返回自身的边界条件，遍历数组完成状态更新后，全局最大乘积即为答案。
+
+```c++
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 0){
+            return 0;
+        } else if(n == 1) {
+            return nums[0];
+        }
+        int p = nums[0];
+        int maxP = nums[0];
+        int minP = nums[0];
+        for(int i = 1; i < n; i++) {
+            int t = maxP;
+            maxP = max(max(maxP * nums[i], nums[i]), minP *nums[i]);
+            minP = min(min(t * nums[i], nums[i]), minP * nums[i]);
+            p = max(maxP, p);
+        }
+        return p;
+    }
+};
+```
+
+![image-20260107230250918](./top-100-liked.assets/image-20260107230250918.png)
