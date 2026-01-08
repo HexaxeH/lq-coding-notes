@@ -2939,9 +2939,27 @@ public:
 
 #### [62. 不同路径](https://leetcode.cn/problems/unique-paths/)
 
-思路：
+思路：一个 m 行 n 列的二维 DP 数组，其中 dp[i] [j] 表示从左上角到达 (i,j) 位置的路径数，由于第一行所有位置只能从左侧连续向右移动到达、第一列所有位置只能从上方连续向下移动到达，因此将 DP 数组的第一行和第一列所有元素初始化为 1；接着从第二行第二列开始遍历网格，每个位置的路径数遵循状态转移方程 dp [i] [j] = dp [i-1] [j] + dp [i] [j-1]（即到达当前位置的路径数等于从上方位置到达的路径数加上从左侧位置到达的路径数）；最终返回 DP 数组右下角元素 dp [m-1] [n-1]，即为从左上角到右下角的总不同路径数。
 
 ```c++
-
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+         vector<vector<int>> dp(m, vector<int>(n, 0));
+         for (int i = 0; i < m; i++) {
+            dp[i][0] = 1;
+        }
+        for (int j = 0; j < n; j++) {
+            dp[0][j] = 1;
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            }
+        }
+        return dp[m-1][n-1];
+    }
+};
 ```
 
+![image-20260108154657844](./top-100-liked.assets/image-20260108154657844.png)
