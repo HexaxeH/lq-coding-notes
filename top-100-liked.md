@@ -2905,3 +2905,43 @@ public:
 ```
 
 ![image-20260107230250918](./top-100-liked.assets/image-20260107230250918.png)
+
+#### [416. 分割等和子集](https://leetcode.cn/problems/partition-equal-subset-sum/)
+
+思路：**01 背包问题**：判断是否能选取若干数组成总和的一半。首先计算数组所有元素的总和，若总和为奇数则直接返回 false；若总和为偶数，初始化一个bool类型的一维 DP 数组，其中 dp [j] 表示能否组成和为 j 的子集，初始时仅 dp [0] 为 true（空集可组成和为 0 的子集）。随后遍历数组中的每个元素，对每个元素采用倒序遍历容量（从 target 到当前元素值）的方式更新 DP 数组，更新规则为 dp [j] = dp [j] || dp [j - num]（即对于和为 j 的子集，要么不选当前元素保持原有状态，要么选当前元素并判断 j-num 能否被组成，只要二者有一个为 true 则 dp [j] 为 true），最终通过 dp [target] 的值判断是否能组成目标和，即是否可将数组分割为两个和相等的子集。
+
+```c++
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(int i = 0;i < nums.size(); i++){
+            sum += nums[i];
+        }
+        if (sum % 2 != 0) {
+            return false;
+        }
+
+        int target = sum/2;
+        vector<bool> dp(target+1, false);
+        dp[0] = true;
+        for(int num : nums){
+            for(int j = target; j >= num; j--){
+                    dp[j] = dp[j] || dp[j-num];
+            }
+        }
+        return dp[target];
+    }
+};
+```
+
+![image-20260108150946558](./top-100-liked.assets/image-20260108150946558.png)
+
+#### [62. 不同路径](https://leetcode.cn/problems/unique-paths/)
+
+思路：
+
+```c++
+
+```
+
