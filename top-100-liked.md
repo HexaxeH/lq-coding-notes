@@ -2963,3 +2963,26 @@ public:
 ```
 
 ![image-20260108154657844](./top-100-liked.assets/image-20260108154657844.png)
+
+#### [64. 最小路径和](https://leetcode.cn/problems/minimum-path-sum/)
+
+思路：`dp[i][j]`为到达网格中第`i`行第`j`列位置（对应原网格`grid[i-1][j-1]`）的最小路径和，为了避免处理边界条件的复杂情况，将`dp`数组的大小设为`(m+1)×(n+1)`并初始化为极大值`INT_MAX`，同时将`dp[0][1]`设为 0 作为路径和的起始基准；随后遍历原网格的每个位置，对于每个位置`(i,j)`（对应`dp[i+1][j+1]`），由于只能从上方`dp[i][j+1]`或左方`dp[i+1][j]`到达该位置，因此取这两个方向中路径和较小的值，加上当前网格位置的数值`grid[i][j]`，即为到达该位置的最小路径和；最终遍历完成后，`dp[m][n]`就存储了从网格左上角到右下角的最小路径和，直接返回该值即可。
+
+```c++
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> dp(m+1, vector<int>(n+1, INT_MAX));
+        dp[0][1] = 0;
+        for(int i = 0; i < m; i++){
+            for(int j = 0;j < n;j++){
+                dp[i+1][j+1] = min(dp[i+1][j],dp[i][j+1]) + grid[i][j];
+            }
+        }
+        return dp[m][n];
+    }
+};
+```
+
+![image-20260109184240718](./top-100-liked.assets/image-20260109184240718.png)
