@@ -3014,3 +3014,30 @@ public:
 ```
 
 ![image-20260109211010545](./top-100-liked.assets/image-20260109211010545.png)
+
+#### [1143. 最长公共子序列](https://leetcode.cn/problems/longest-common-subsequence/)
+
+思路：`dp[i][j]`表示字符串`text1`的前`i`个字符和`text2`的前`j`个字符的最长公共子序列长度；为避免边界越界，将`dp`数组初始化为`(m+1)×(n+1)`的维度（`m`、`n`分别为两个字符串长度），且所有元素初始值为 0（空字符串与任意字符串的 LCS 长度为 0）。通过两层循环遍历（起始值为1，避免-1，越界）两个字符串的所有字符组合，若当前比较的`text1[i-1]`与`text2[j-1]`字符相等，说明该字符可加入公共子序列，因此`dp[i][j]`等于左上角`dp[i-1][j-1]`的值加 1；若字符不相等，则取 “不包含`text1`当前字符的结果（`dp[i-1][j]`）” 和 “不包含`text2`当前字符的结果（`dp[i][j-1]`）” 中的较大值作为`dp[i][j]`的值。最终，`dp[m][n]`即为两个完整字符串的最长公共子序列长度。
+
+```c++
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        int m = text1.size();
+        int n = text2.size();
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+        for(int i = 1; i <= m; i++){
+            for(int j = 1; j <= n; j++){
+                if(text1[i-1] == text2[j-1]){
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }else{
+                    dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
+```
+
+![image-20260110233105945](./top-100-liked.assets/image-20260110233105945.png)
