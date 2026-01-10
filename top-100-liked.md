@@ -3041,3 +3041,36 @@ public:
 ```
 
 ![image-20260110233105945](./top-100-liked.assets/image-20260110233105945.png)
+
+#### [72. 编辑距离](https://leetcode.cn/problems/edit-distance/)
+
+思路：用`dp[i][j]`表示将`word1`的前`i`个字符转换成`word2`的前`j`个字符所需的最少操作数；初始化边界条件 ——`dp[i][0] = i`（将`word1`前`i`个字符转为空字符串需删除`i`次）、`dp[0][j] = j`（将空字符串转为`word2`前`j`个字符需插入`j`次）；然后通过两层循环遍历两个字符串的所有字符组合，若当前比较的`word1[i-1]`与`word2[j-1]`字符相等，无需任何操作，`dp[i][j]`直接继承`dp[i-1][j-1]`的值；若字符不相等，则取替换（`dp[i-1][j-1]`）、删除（`dp[i-1][j]`）、插入（`dp[i][j-1]`）三种操作前置的最小值，再加 1（当前操作的代价）作为`dp[i][j]`的值；最终`dp[m][n]`即为将完整的`word1`转为完整的`word2`的最小编辑距离。
+
+```c++
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        int m = word1.size();
+        int n = word2.size();
+        vector<vector<int>> dp(m+1,vector<int>(n+1 , 0));
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+         for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                 if (word1[i - 1] == word2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = min(dp[i - 1][j - 1], min(dp[i - 1][j], dp[i][j - 1])) + 1;
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
+```
+
+![image-20260111000607520](./top-100-liked.assets/image-20260111000607520.png)
