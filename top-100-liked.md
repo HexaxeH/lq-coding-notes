@@ -3074,3 +3074,30 @@ public:
 ```
 
 ![image-20260111000607520](./top-100-liked.assets/image-20260111000607520.png)
+
+#### [31. 下一个排列](https://leetcode.cn/problems/next-permutation/)
+
+思路：**在保持 “下一个”（比原排列大）的前提下，让增量尽可能小**。先从数组末尾向前遍历，找到第一个满足 `nums[i] < nums[i+1]` 的位置 `i`（这是原排列中可以 “增大” 的最小位置）；若找到该位置 `i`，则再从数组末尾向前找第一个比 `nums[i]` 大的元素 `nums[j]`，交换 `nums[i]` 和 `nums[j]`（此时 `i` 位置已增大，且是最小的增大方式）；最后将 `i+1` 到数组末尾的元素反转（因为交换后 `i+1` 到末尾是降序，反转后变为升序）；若未找到位置 `i`（说明原排列已是最大排列），则直接反转整个数组，回到最小排列。
+
+```c++
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int n = nums.size();
+        int i = n-2;
+        while(i>=0 && nums[i] >= nums[i+1]){
+            i--;
+        }
+        if(i >= 0){
+            int j = n-1;
+            while(nums[j] <= nums[i]){
+                j--;
+            }
+            swap(nums[i],nums[j]);
+        }
+        reverse(nums.begin() + i + 1, nums.end());
+    }
+};
+```
+
+![image-20260111202732004](./top-100-liked.assets/image-20260111202732004.png)
