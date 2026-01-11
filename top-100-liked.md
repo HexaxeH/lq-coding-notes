@@ -3101,3 +3101,34 @@ public:
 ```
 
 ![image-20260111202732004](./top-100-liked.assets/image-20260111202732004.png)
+
+#### [287. 寻找重复数](https://leetcode.cn/problems/find-the-duplicate-number/)
+
+思路：先确定查找范围是 `[1, nums.size()-1]`，在每轮循环中取中间值 `mid`，统计数组中落在 `[min, mid]` 区间内的数字个数 `cnt`若该区间内数字最大容量（`mid - min + 1`）小于实际统计数 `cnt`，说明重复数字一定在 `[min, mid]` 区间内，因此将查找范围的上界 `max` 调整为 `mid`；反之则说明重复数字在 `[mid+1, max]` 区间内，将下界 `min` 调整为 `mid+1`；不断缩小查找范围，直到 `min` 与 `max` 重合，此时的数值即为数组中重复的数字。
+
+```c++
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int min = 1; // 查找数范围的最小值
+        int max = nums.size();//最大值
+         while (min < max) {
+            int mid = (min + max) / 2;
+            // 计数
+            int cnt = 0;
+            for (int v : nums) {
+                if (v >= min && v <= mid) {
+                    cnt++;
+                }
+            }
+            if (cnt > mid - min + 1) 
+                max = mid;
+            else
+                min = mid + 1;
+        }
+        return min;
+    }
+};
+```
+
+![image-20260111221431162](./top-100-liked.assets/image-20260111221431162.png)
