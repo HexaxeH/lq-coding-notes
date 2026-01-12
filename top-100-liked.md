@@ -3132,3 +3132,32 @@ public:
 ```
 
 ![image-20260111221431162](./top-100-liked.assets/image-20260111221431162.png)
+
+#### [42. 接雨水](https://leetcode.cn/problems/trapping-rain-water/)
+
+思路：用左右双指针从数组两端向中间遍历，同时维护左指针左侧的最大高度（leftCeil）和右指针右侧的最大高度（rightCeil），用于“每个位置接水量由左右两侧最高挡板中较矮的一个决定”的规则，每一步判断leftCeil和rightCeil的大小：若leftCeil更小，则左指针位置的接水量仅由leftCeil决定（因为右侧真实最大高度必然≥rightCeil>leftCeil），计算该位置水量后右移左指针；反之则右指针位置的接水量由rightCeil决定，计算后左移右指针。在一次遍历中累加得到总接水量。
+
+```c++
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int l = 0, r = height.size() - 1;
+        int cap = 0;
+        int leftCeil = 0, rightCeil = 0;
+
+        while (l <= r) {
+            leftCeil = max(leftCeil, height[l]);
+            rightCeil = max(rightCeil, height[r]);
+
+            if (leftCeil < rightCeil)
+                cap += leftCeil - height[l++]; // 增加水量并使 l 右移
+            else
+                cap += rightCeil - height[r--]; // 增加水量并使 r 左移
+        }
+
+        return cap;
+    }
+};
+```
+
+![image-20260112194200018](./top-100-liked.assets/image-20260112194200018.png)
