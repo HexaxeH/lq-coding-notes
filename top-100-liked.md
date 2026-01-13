@@ -3161,3 +3161,37 @@ public:
 ```
 
 ![image-20260112194200018](./top-100-liked.assets/image-20260112194200018.png)
+
+#### [239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/)
+
+思路：遍历数组时以当前元素下标i作为窗口右边窗口左边界left=i-k+1；接着通过循环移除双端队列尾部所有对应数值小于当前元素的下标，确保队列q内下标对应的数值呈单调递减，再加入下一个下标i加入队列；随后移除队列头部超出左边界left的无效下标，保证队列内所有下标均在当前窗口范围内；当窗口完全形成（left≥0）时，队列头部即为当前窗口最大值的下标，将其对应数值存入结果数组对应位置。在一次遍历中快速定位每个窗口的最大值。
+
+```c++
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<int> ans(n - k + 1);
+        deque<int> q;
+        for( int i = 0; i < n; i++){
+            int left = i-k+1;
+            while(!q.empty() && nums[q.back()] <= nums[i]){
+                q.pop_back();
+            }
+            q.push_back(i);
+
+            if(q.front() < left){
+                q.pop_front();
+            }
+
+            if(left >= 0){
+                ans[left] = nums[q.front()];
+            }
+        }
+        return ans;
+    }
+};
+```
+
+![image-20260113210026326](./top-100-liked.assets/image-20260113210026326.png)
+
