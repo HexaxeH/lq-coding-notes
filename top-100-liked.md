@@ -3246,3 +3246,33 @@ public:
 ```
 
 ![image-20260113215923615](/top-100-liked.assets/image-20260113215923615.png)
+
+#### [41. 缺失的第一个正数](https://leetcode.cn/problems/first-missing-positive/)
+
+思路：遍历数组，通过 while 循环将 [1, 数组长度] 范围内的数归位到一一对应的下标（ x-1 ）处，若遇到非正整数、超出数组长度的数或目标位置已存在正确数值则终止置换；对应完成后，再次遍历数组，第一个数值与下标 + 1 不匹配的位置，其下标 + 1 即为缺失的最小正整数；若所有位置均匹配，则缺失的是数组长度 + 1。
+
+```c++
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+      for(int i = 0; i < nums.size(); i++){
+        while(nums[i] != i+1){
+            if(nums[i] <= 0 || nums[i] > nums.size() || nums[i] == nums[nums[i]-1]){
+                break;
+            }
+            int index = nums[i] - 1;
+            nums[i] = nums[index];
+            nums[index] = index + 1;
+        }
+      }  
+      for(int i = 0; i < nums.size(); i++){
+        if(nums[i] != (i+1)){
+            return (i+1);
+        }
+      }
+      return nums.size() + 1;
+    }
+};
+```
+
+![image-20260114205406282](./top-100-liked.assets/image-20260114205406282.png)
