@@ -3276,3 +3276,47 @@ public:
 ```
 
 ![image-20260114205406282](./top-100-liked.assets/image-20260114205406282.png)
+
+#### [84. 柱状图中最大的矩形](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
+
+思路：通过单调栈的单调性分别求解每个柱子左右两侧第一个高度更小的柱子下标，左侧柱子先从左到右遍历，利用栈弹出所有高度≥当前柱子的下标，确定左侧第一个更小柱子下标（left 数组）并将当前下标入栈；右侧柱子从右到左遍历，确定右侧第一个更小柱子下标（right 数组）；最后遍历每个柱子，以其高度为矩形高度、左右更小柱子下标间距减 1 为宽度计算面积，取所有面积的最大值即为结果。
+
+```c++
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        vector<int> left(n,-1);
+        stack<int> st;
+        for(int i = 0;i < n; i++){
+            int h = heights[i];
+            while(!st.empty() && heights[st.top()] >= h){
+                st.pop();
+            }
+            if(!st.empty()){
+                left[i] = st.top();
+            }
+            st.push(i);
+        }
+        vector<int> right(n,n);
+        stack<int> st1;
+        for(int i = n-1;i >= 0; i--){
+            int h = heights[i];
+            while(!st1.empty() && heights[st1.top()] >= h){
+                st1.pop();
+            }
+            if(!st1.empty()){
+                right[i] = st1.top();
+            }
+            st1.push(i);
+        }
+        int ans = 0;
+        for(int i = 0;i < n; i++){
+            ans = max(ans, heights[i]*(right[i]-left[i]-1));
+        }
+        return ans;
+    }
+};
+```
+
+![image-20260115221151821](./top-100-liked.assets/image-20260115221151821.png)
