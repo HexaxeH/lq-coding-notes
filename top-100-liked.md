@@ -3320,3 +3320,41 @@ public:
 ```
 
 ![image-20260115221151821](./top-100-liked.assets/image-20260115221151821.png)
+
+#### [124. 二叉树中的最大路径和](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)
+
+思路：通过递归计算每个节点：以该节点为“路径最高点”的最大路径和（左子树值+节点值+右子树值），并用全局变量res记录所有节点该值的最大值；选取左/右子树中更大的值与节点值相加，若结果为负则返回0为无效分支。递归过程中先遍历左右子树获取贡献值，再计算当前节点的路径和并更新全局最大值，最终返回res即为二叉树的最大路径和。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    int res = INT_MIN;
+
+    int depth(TreeNode* root){
+        if(root == nullptr) return 0;
+
+        int leftNode = depth(root->left);
+        int rigthNode = depth(root->right);
+        res = max(res , leftNode + rigthNode + root->val);
+        return max(max(leftNode,rigthNode) + root->val,0);
+    }
+
+public:
+    int maxPathSum(TreeNode* root) {
+        depth(root);
+        return res;
+    }
+};
+```
+
+![image-20260116183701673](./top-100-liked.assets/image-20260116183701673.png)
