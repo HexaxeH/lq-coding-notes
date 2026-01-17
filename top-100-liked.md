@@ -3358,3 +3358,115 @@ public:
 ```
 
 ![image-20260116183701673](./top-100-liked.assets/image-20260116183701673.png)
+
+#### [25. K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/)
+
+思路：遍历链表统计总节点数，明确能完整划分成多少个 k 节点组（剩余不足 k 个的节点无需反转）；创建虚拟头节点简化链表头的边界处理，并用指针`p`负责衔接每一组反转后的节点；然后以 k 为单位循环处理每一组节点：通过经典头插法（保存下一个节点→当前节点指向临时头后继→临时头指向当前节点）完成该组k个节点的反转，同时记录该组反转前的头节点（反转后变为组尾）；反转后，将组前驱锚点`p`指向反转后的组头，再将组尾连接到下一组的头节点，最后将`p`移动到当前组尾（作为下一组的前驱锚点）；重复上述分组反转与衔接操作直到所有k节点组处理完毕，最终返回全局虚拟头节点的后继节点，即为k个一组反转后的链表头。
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        int n = 0;
+        ListNode* cur = head;
+        while(cur){
+            n++;
+            cur = cur->next;
+        }
+
+        ListNode dummy(0, head);
+        ListNode* p = &dummy;
+        cur = head;
+
+        for(; n >= k; n -= k){
+            ListNode tempDummy;
+            ListNode* tempHead = &tempDummy;
+            ListNode* groupTail = cur;
+            for(int i = 0; i < k; i++){
+                ListNode* next = cur->next;
+                cur->next = tempHead->next;
+                tempHead->next = cur;
+                cur = next;
+            }
+
+            p->next = tempHead->next;
+            groupTail->next = cur;
+            p = groupTail;
+        }
+        return dummy.next;
+    }
+};
+```
+
+![image-20260117213505004](./top-100-liked.assets/image-20260117213505004.png)
+
+#### [23. 合并 K 个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists/)
+
+思路：使用21.合并两个有序链表题的函数，完成两个有序链表的合并；在此基础上，设计递归分治函数，将待合并的链表区间 [i, j) 不断拆分为左半区间 [i, i+m/2) 和右半区间 [i+m/2, j)（m 为区间长度），递归处理左右子区间直至子区间仅含 0 个或 1 个链表（0 个返回空、1 个直接返回该链表）；最后将左右子区间合并后的结果，通过上述合并两个有序链表的函数再次合并，得到当前区间的合并结果；最终返回的结果即为所有 k 个有序链表合并后的完整有序链表。
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* p1 = list1;
+        ListNode* p2 = list2;
+        ListNode* newlist = new ListNode();
+        ListNode* p = newlist;
+        while(p1&&p2){
+            if(p1->val<=p2->val){
+                p->next = p1;
+                p1=p1->next;
+            }else{
+                p->next = p2;
+                p2=p2->next;
+            }
+            p=p->next;
+        }
+        if(p1){
+            p->next = p1;
+        }else{
+            p->next=p2;
+        }
+        ListNode* result = newlist->next;
+        return result;
+    }
+     // 合并从 lists[i] 到 lists[j-1] 的链表
+    ListNode* mergeKLists(vector<ListNode*>& lists, int i, int j) {
+    int m = j - i;
+    if (m == 0) 
+        return nullptr; 
+    if (m == 1) {
+        return lists[i]; 
+    }
+    ListNode* left = mergeKLists(lists, i, i + m / 2); // 合并左半部分
+    ListNode* right = mergeKLists(lists, i + m / 2, j); // 合并右半部分
+    return mergeTwoLists(left, right); // 合并左右两部分结果
+    }
+
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        return mergeKLists(lists, 0, lists.size());
+    }
+};
+```
+
+![image-20260117222123494](./top-100-liked.assets/image-20260117222123494.png)
