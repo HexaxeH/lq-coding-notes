@@ -3469,4 +3469,67 @@ public:
 };
 ```
 
-![image-20260117222123494](./top-100-liked.assets/image-20260117222123494.png)
+![image-20260117223014941](./top-100-liked.assets/image-20260117223014941.png)
+
+#### [32. 最长有效括号](https://leetcode.cn/problems/longest-valid-parentheses/)
+
+思路：用栈记录有效括号的边界索引，通过索引差值计算有效长度，初始栈并压入-1作为有效括号的起始边界（处理首个字符为右括号的边界情况）；遍历字符串的每个字符并记录其索引，遇到左括号时将其索引压入栈（标记待匹配的左括号位置）；遇到右括号时，若栈内除初始边界外还有元素（说明有可匹配的左括号），则弹出栈顶的左括号索引，用当前右括号索引减去栈顶剩余的边界索引，得到当前有效括号子串的长度，并更新最大长度；若栈内仅剩余初始边界（说明当前右括号无匹配的左括号），则将当前右括号索引替换栈顶的初始边界（作为新的有效括号起始边界）；遍历结束后，记录的最大长度即为最长有效括号子串的长度。
+
+```c++
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        stack<int> stk;
+        stk.push(-1);
+        int ans = 0;
+        for(int i = 0; i < s.size(); i++){
+            if(s[i] == '('){
+                stk.push(i);
+            }else if (stk.size() > 1){
+                stk.pop();
+                ans = max(ans, i - stk.top());
+            }else{
+                stk.top() = i;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+![image-20260118212502585](./top-100-liked.assets/image-20260118212502585.png)
+
+#### [295. 数据流的中位数](https://leetcode.cn/problems/find-median-from-data-stream/)
+
+思路：维护两个优先队列，小顶堆 A 存储较大的一半元素（堆顶为较大部分的最小值），大顶堆 B 存储较小的一半元素（堆顶为较小部分的最大值）；添加元素时，通过动态平衡两个堆的大小（始终保证 A 的大小等于 B 或比 B 大 1）：若两堆大小不等，先将元素加入 A，再把 A 的堆顶移至 B；若大小相等，先将元素加入 B，再把 B 的堆顶移至 A，确保 A 始终存放较大半区且堆顶为中位数候选；查找中位数时，若两堆大小不等（总元素数为奇数），直接返回 A 的堆顶（即中位数）；若大小相等（总元素数为偶数），返回 A 和 B 堆顶的平均值。
+
+```c++
+class MedianFinder {
+public:
+    priority_queue<int, vector<int>, greater<int>> A; // 保存较大的一半
+    priority_queue<int, vector<int>, less<int>> B; //保存较小的一半
+    MedianFinder() { }
+    void addNum(int num) {
+        if (A.size() != B.size()) {
+            A.push(num);
+            B.push(A.top());
+            A.pop();
+        } else {
+            B.push(num);
+            A.push(B.top());
+            B.pop();
+        }
+    }
+    double findMedian() {
+        return A.size() != B.size() ? A.top() : (A.top() + B.top()) / 2.0;
+    }
+};
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
+```
+
+![image-20260118221846472](./top-100-liked.assets/image-20260118221846472.png)
