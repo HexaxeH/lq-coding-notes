@@ -3533,3 +3533,50 @@ public:
 ```
 
 ![image-20260118221846472](./top-100-liked.assets/image-20260118221846472.png)
+
+#### [51. N 皇后](https://leetcode.cn/problems/n-queens/)
+
+思路：DFS+ 回溯的策略，逐行放置皇后以避免行冲突，同时通过三个数组分别标记已被占用的列、主对角线（r+c 为定值）、反对角线（r-c+n-1 为定值），提前判断当前位置是否会与已放置的皇后产生列或对角线冲突，若当前位置合法，放置皇后并标记对应列和对角线为占用状态，接着递归处理下一行；当递归到最后一行（所有皇后都合法放置）时，将当前棋盘布局存入结果集；若递归返回则执行回溯操作，撤销当前皇后的放置并恢复列和对角线的占用标记，继续尝试当前行的下一列，最终遍历出所有合法的 N 皇后摆放方案。
+
+```c++
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> ans;
+        vector<string> board(n, string(n, '.')); // 空棋盘
+        vector<uint8_t> col(n, 0), diag1(2 * n - 1, 0), diag2(2 * n - 1, 0);
+
+        dfs(n, 0, board, col, diag1, diag2, ans);
+        
+        return ans;
+    }
+
+private:
+    void dfs(int n, int r, vector<string>& board, vector<uint8_t>& col, 
+             vector<uint8_t>& diag1, vector<uint8_t>& diag2, vector<vector<string>>& ans) {
+        if (r == n) {
+            ans.push_back(board); // 保存当前合法的棋盘布局
+            return;
+        }
+        
+        for (int c = 0; c < n; c++) {
+            int rc = r - c + n - 1; 
+            if (!col[c] && !diag1[r + c] && !diag2[rc]) {
+                // 放置皇后
+                board[r][c] = 'Q';
+                // 标记当前列、对角线为已占用
+                col[c] = diag1[r + c] = diag2[rc] = 1;
+                
+                // 处理下一行
+                dfs(n, r + 1, board, col, diag1, diag2, ans);
+                
+                // 恢复现场
+                col[c] = diag1[r + c] = diag2[rc] = 0;
+                board[r][c] = '.';
+            }
+        }
+    }
+};
+```
+
+![image-20260119212405883](./top-100-liked.assets/image-20260119212405883.png)
