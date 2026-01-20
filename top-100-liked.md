@@ -3580,3 +3580,66 @@ private:
 ```
 
 ![image-20260119212405883](./top-100-liked.assets/image-20260119212405883.png)
+
+#### [4. 寻找两个正序数组的中位数](https://leetcode.cn/problems/median-of-two-sorted-arrays/)
+
+思路：先处理其中一个数组为空的边界情况，直接根据另一数组的长度奇偶性计算中位数；对于两个非空的有序数组，通过双指针遍历的方式将它们合并为一个新的有序数组（遍历过程中比较两个数组当前指针位置的元素，将较小的元素放入新数组并移动对应指针，若其中一个数组遍历完毕，则直接将另一数组剩余元素依次放入新数组）；最后根据合并后新数组的长度奇偶性计算中位数 —— 若长度为偶数，取中间两个数的平均值；若为奇数，直接取中间位置的数作为中位数。但是时间复杂度是 O (m + n)
+
+```c++
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+       int m = nums1.size();
+        int n = nums2.size();
+        vector<int> nums(m + n);
+        
+        if(m == 0){
+            if(n % 2 == 0){
+                return (nums2[n / 2 - 1] + nums2[n / 2]) / 2.0; 
+            }else{
+                return nums2[n / 2];
+            }
+        }
+
+        if(n == 0){
+            if(m % 2 == 0){
+                return (nums1[m / 2 - 1] + nums1[m / 2]) / 2.0; 
+            }else{
+                return nums1[m / 2]; 
+            }
+        }
+        
+        int count = 0;
+        int i = 0, j = 0;
+        // 合并两个有序数组
+        while(count != (m + n)){
+            if(i == m){
+                while(j != n){
+                    nums[count++] = nums2[j++];
+                }
+                break;
+            }
+            if(j == n){
+                while(i != m){
+                    nums[count++] = nums1[i++];
+                }
+                break;
+            }
+            if(nums1[i] < nums2[j]){
+                nums[count++] = nums1[i++];
+            }else{
+                nums[count++] = nums2[j++];
+            }
+        }
+        
+        // 计算中位数
+        if(count % 2 == 0){
+            return (nums[count / 2 - 1] + nums[count / 2]) / 2.0; // 修复：-2→-1
+        }else{
+            return nums[count / 2];
+        }
+    }
+};
+```
+
+![image-20260120204134055](./top-100-liked.assets/image-20260120204134055.png)
