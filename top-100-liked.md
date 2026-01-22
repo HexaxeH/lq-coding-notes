@@ -30,6 +30,27 @@ class Solution {
 
 ![6b325dad8b448e95b957855ca345c4dd](./top-100-liked.assets/6b325dad8b448e95b957855ca345c4dd.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+    for (let i = 0; i < nums.length; i++) {
+        for (let j = i + 1; j < nums.length; j++) {
+            if (nums[i] + nums[j] === target) {
+                return [i, j];
+            }
+        }
+    }
+   
+    return [];
+};
+```
+
+![image-20260122230401801](./top-100-liked.assets/image-20260122230401801.png)
+
 #### [283. 移动零](https://leetcode.cn/problems/move-zeroes/)
 
 思路：用flag标记非零元素应该放置的位置，i遍历整个数组，当i指针遇到非零元素时，交换i上的值和flag上的值，且flag标记前进一位。交换到i到达最后且flag标记过所有非零元素
@@ -633,6 +654,32 @@ public:
 ```
 
 ![image-20250912235238010](./top-100-liked.assets/image-20250912235238010.png)
+
+```javascript
+/**
+ * @param {string[]} strs
+ * @return {string[][]}
+ */
+var groupAnagrams = function(strs) {
+     const map = {};
+    
+    for (let i = 0; i < strs.length; i++) {
+        const str = strs[i];
+        const sortedStr = str.split('').sort().join('');
+        
+        if (!map[sortedStr]) {
+            map[sortedStr] = [];
+        }
+        map[sortedStr].push(str);
+    }
+    
+    const result = Object.values(map);
+    
+    return result;
+};
+```
+
+![image-20260122230858838](./top-100-liked.assets/image-20260122230858838.png)
 
 #### [128. 最长连续序列](https://leetcode.cn/problems/longest-consecutive-sequence/)
 
