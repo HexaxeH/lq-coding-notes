@@ -712,6 +712,40 @@ public:
 
 ![image-20250913171639953](./top-100-liked.assets/image-20250913171639953.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var longestConsecutive = function(nums) {
+     let count = 1;
+    let maxLen = 1;
+    const n = nums.length;
+
+    if (n === 0 || n === 1) {
+        return n;
+    }
+
+    nums.sort((a, b) => a - b);
+
+    for (let i = 0; i < n - 1; i++) {
+        if (nums[i + 1] === nums[i] + 1) {
+            count++;
+            if (count > maxLen) {
+                maxLen = count;
+            }
+        }
+        else if (nums[i] !== nums[i + 1]) {
+            count = 1;
+        }
+    }
+
+    return maxLen;
+};
+```
+
+![image-20260123221340990](./top-100-liked.assets/image-20260123221340990.png)
+
 #### [169. 多数元素](https://leetcode.cn/problems/majority-element/)
 
 思路：用哈希表统计数组中各元素的出现次数，先计算数组长度的一半作为判断依据，遍历数组时更新每个元素的计数，一旦某元素的计数超过阈值，即确定为多数元素并返回。
