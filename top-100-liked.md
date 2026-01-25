@@ -76,6 +76,28 @@ public:
 
 ![94a43ba8365d2f34c14a7d6c27b05f8d](./top-100-liked.assets/94a43ba8365d2f34c14a7d6c27b05f8d.png)
 
+```js
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function(nums) {
+     let flag = 0; 
+    for (let i = 0; i < nums.length; i++) { 
+        if (nums[i] !== 0) { 
+            if (i !== flag) { 
+                const temp = nums[i];
+                nums[i] = nums[flag];
+                nums[flag] = temp;
+            }
+            flag++; 
+        }
+    }
+};
+```
+
+![image-20260125214403951](./top-100-liked.assets/image-20260125214403951.png)
+
 #### [160. 相交链表](https://leetcode.cn/problems/intersection-of-two-linked-lists/)
 
 思路：双重循环逐一比对两个链表的所有节点，第二次循环，指针pb每次重新指向头节点，直到找到第一个相同的节点（相同的地址）。
