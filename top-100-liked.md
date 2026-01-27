@@ -872,6 +872,36 @@ public:
 
 ![image-20250916232741098](./top-100-liked.assets/image-20250916232741098.png)
 
+![image-20260127233037851](./top-100-liked.assets/image-20260127233037851.png)
+
+```javascript
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+var maxArea = function(height) {
+     let left = 0;                    // 数组起始位置
+    let right = height.length - 1;   // 数组末尾位置
+    let max_water = 0;               // 记录最大盛水量
+
+    while (left < right) {
+        const current_water = Math.min(height[left], height[right]) * (right - left);
+
+        if (current_water > max_water) {
+            max_water = current_water;
+        }
+
+        if (height[left] < height[right]) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+
+    return max_water;
+};
+```
+
 #### [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
 
 思路：通过两层for循环可以实现暴力破解寻找无重复字符串，最外层循环，作为每次生成子字符串的头节点；第二层循环，每次从i位置开始，拼装子字符串，用哈希表记录当前子串中的字符以检查是否重复，一旦遇到重复就停止，同时记录当前子串的长度并更新全局最长长度，最终返回找到的最大长度。
