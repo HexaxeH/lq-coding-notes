@@ -841,6 +841,48 @@ public:
 
 ![image-20250915210657047](top-100-liked.assets/image-20250915210657047.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var threeSum = function(nums) {
+    const ans = [];
+    nums.sort((a, b) => a - b);
+    const n = nums.length;
+    let k = 0, target = 0;
+
+    for (let i = 0; i < n; i++) {
+        if (i > 0 && nums[i] === nums[i - 1]) {
+            continue;
+        }
+        k = n - 1;
+        target = -nums[i];
+
+        for (let j = i + 1; j < n; j++) {
+            if (j > i + 1 && nums[j] === nums[j - 1]) {
+                continue;
+            }
+
+            while (j < k && nums[j] + nums[k] > target) {
+                k--;
+            }
+
+            if (j === k) {
+                break;
+            }
+
+            if (nums[j] + nums[k] === target) {
+                ans.push([nums[i], nums[j], nums[k]]);
+            }
+        }
+    }
+    return ans;
+};
+```
+
+![image-20260128232928624](./top-100-liked.assets/image-20260128232928624.png)
+
 #### [11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
 
 思路：双指针：用左右指针分别位于数组两端，通过计算当前指针形成的容器水量（由两指针处高度的最小值与间距决定）并不断在比较后更新最大值，随后始终移动较矮边界的指针（因移动较高边界无法增大水量），最终找到最大水量。
