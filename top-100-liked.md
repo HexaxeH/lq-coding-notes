@@ -3818,3 +3818,31 @@ public:
 ```
 
 ![image-20260120204134055](./top-100-liked.assets/image-20260120204134055.png)
+
+```javascript
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+var trap = function(height) {
+     let l = 0, r = height.length - 1;
+    // 总接水量
+    let cap = 0;
+    // 记录左侧和右侧的最大高度
+    let leftCeil = 0, rightCeil = 0;
+    
+    while (l <= r) {
+        leftCeil = Math.max(leftCeil, height[l]);
+        rightCeil = Math.max(rightCeil, height[r]);
+
+        if (leftCeil < rightCeil) {
+            cap += leftCeil - height[l++];
+        } else {
+            cap += rightCeil - height[r--];
+        }
+    }
+    return cap;
+};
+```
+
+![image-20260130232753837](./top-100-liked.assets/image-20260130232753837.png)
