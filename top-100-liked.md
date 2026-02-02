@@ -1037,6 +1037,60 @@ public:
 
 ![image-20250919000147122](./top-100-liked.assets/image-20250919000147122.png)
 
+```javascript
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {number[]}
+ */
+var findAnagrams = function(s, sP) {
+    const ret = [];
+    
+    const check = (mp1, mp2) => {
+        if (mp1.size !== mp2.size) return false;
+        for (const [key, value] of mp1) {
+            if (!mp2.has(key) || mp2.get(key) !== value) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const mp1 = new Map();
+    const mp2 = new Map();
+    const pLen = sP.length;
+    const sLen = s.length;
+
+    if (sLen < pLen) return ret;
+
+    for (let i = 0; i < pLen; i++) {
+        mp1.set(sP[i], (mp1.get(sP[i]) || 0) + 1);
+        mp2.set(s[i], (mp2.get(s[i]) || 0) + 1);
+    }
+
+    for (let left = 0, right = pLen - 1; right < sLen; left++, right++) {
+        if (check(mp1, mp2)) {
+            ret.push(left);
+        }
+
+        const leftChar = s[left];
+        mp2.set(leftChar, mp2.get(leftChar) - 1);
+        if (mp2.get(leftChar) === 0) {
+            mp2.delete(leftChar);
+        }
+
+        const nextRightChar = s[right + 1];
+        if (right + 1 < sLen) {
+            mp2.set(nextRightChar, (mp2.get(nextRightChar) || 0) + 1);
+        }
+    }
+
+    return ret;
+};
+```
+
+![image-20260202231249472](./top-100-liked.assets/image-20260202231249472.png)
+
 #### [560. 和为 K 的子数组](https://leetcode.cn/problems/subarray-sum-equals-k/)
 
 思路：利用暴力枚举法，外层循环固定子数组的起始索引left，内层循环从 left 开始遍历结束索引 right，在遍历过程中实时累加从nums [left] 到 nums [right]的元素和 sum，每当sum等于k时，就将count加1，最终返回count（所有符合条件的连续子数组的总数）
