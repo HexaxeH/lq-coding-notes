@@ -1117,6 +1117,29 @@ public:
 
 ![image-20250920003203786](./top-100-liked.assets/image-20250920003203786.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var subarraySum = function(nums, k) {
+    let count = 0, preSum = 0;
+    const map = new Map();
+    map.set(0, 1); 
+    for (const num of nums) {
+        preSum += num;
+        if (map.has(preSum - k)) {
+            count += map.get(preSum - k);
+        }
+        map.set(preSum, (map.get(preSum) || 0) + 1);
+    }
+    return count;
+};
+```
+
+![image-20260203205241192](./top-100-liked.assets/image-20260203205241192.png)
+
 #### [53. 最大子数组和](https://leetcode.cn/problems/maximum-subarray/)
 
 思路：通过一次线性遍历，动态维护 “以当前元素结尾的子数组最大和” 与 “全局最大子数组和”。初始化时，两者均设为数组首个元素；遍历后续元素时，若前者为非正数（说明之前的子数组无增益），则从当前元素重新开始计算局部和，否则将当前元素加入局部和；每次更新局部和后，都与全局最大值比较并更新，确保全局最大值始终记录已遍历部分的最优解。
