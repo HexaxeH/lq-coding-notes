@@ -3447,6 +3447,35 @@ public:
 
 ![image-20260113210026326](./top-100-liked.assets/image-20260113210026326.png)
 
+```javascript
+var maxSlidingWindow = function(nums, k) {
+    const n = nums.length;
+    const ans = new Array(n - k + 1);
+    const q = [];
+
+    for (let i = 0; i < n; i++) {
+        const left = i - k + 1;
+
+        while (q.length > 0 && nums[q[q.length - 1]] < nums[i]) {
+            q.pop();
+        }
+        q.push(i);
+
+        if (q[0] < left) {
+            q.shift();
+        }
+
+        if (left >= 0) {
+            ans[left] = nums[q[0]];
+        }
+    }
+
+    return ans;
+};
+```
+
+
+
 #### [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
 
 思路：`int ans_left = -1 ,ans_right = m;`用来记录最短子串的左右端点，`int cnt_s[128]{}; int cnt_t[128]{};`两个计数数组，统计字符串 t 中各字符的出现次数；枚举 s 子串的右端点 right（子串最后一个字母的下标）,当窗口满足 “s 的字符计数全不少于 t”（通过 is_covered 函数校验）时，进入循环收缩左边界以寻找最小窗口：若当前窗口更小则更新结果的左右边界，随后减少左边界字符的计数并右移左指针；遍历结束后，若找到有效窗口则返回对应子串，否则返回空字符串。
