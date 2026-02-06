@@ -3474,7 +3474,7 @@ var maxSlidingWindow = function(nums, k) {
 };
 ```
 
-
+![image-20260206232941931](./top-100-liked.assets/image-20260206232941931.png)
 
 #### [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
 
@@ -3527,6 +3527,51 @@ public:
 ```
 
 ![image-20260113215923615](/top-100-liked.assets/image-20260113215923615.png)
+
+```javascript
+function minWindow(s, t) {
+    function isCovered(cntS, cntT) {
+        for (let i = 'A'.charCodeAt(0); i <= 'Z'.charCodeAt(0); i++) {
+            if (cntS[i] < cntT[i]) {
+                return false;
+            }
+        }
+        for (let i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
+            if (cntS[i] < cntT[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const cntS = new Array(128).fill(0);
+    const cntT = new Array(128).fill(0);
+    
+    for (const c of t) {
+        cntT[c.charCodeAt(0)]++;
+    }
+
+    const m = s.length;
+    let ansLeft = -1, ansRight = m;
+    let left = 0;
+
+    for (let right = 0; right < m; right++) {
+        cntS[s.charCodeAt(right)]++;
+        while (isCovered(cntS, cntT)) {
+            if (right - left < ansRight - ansLeft) {
+                ansLeft = left;
+                ansRight = right;
+            }
+            cntS[s.charCodeAt(left)]--;
+            left++;
+        }
+    }
+
+    return ansLeft === -1 ? "" : s.substring(ansLeft, ansRight + 1);
+}
+```
+
+![image-20260206233403400](./top-100-liked.assets/image-20260206233403400.png)
 
 #### [41. 缺失的第一个正数](https://leetcode.cn/problems/first-missing-positive/)
 
