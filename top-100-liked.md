@@ -1165,6 +1165,28 @@ public:
 
 ![image-20250921234822553](./top-100-liked.assets/image-20250921234822553.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubArray = function(nums) {
+    let res = nums[0];
+    let maxnum = nums[0];
+    for (let i = 1; i < nums.length; i++) {
+        if (maxnum <= 0) {
+            maxnum = nums[i];
+        } else {
+            maxnum += nums[i];
+        }
+        res = Math.max(maxnum, res);
+    }
+    return res;
+};
+```
+
+![image-20260207231101209](./top-100-liked.assets/image-20260207231101209.png)
+
 #### [189. 轮转数组](https://leetcode.cn/problems/rotate-array/)
 
 思路：通过三次反转操作来实现数组的旋转。给定一个整数数组 nums 和一个整数 k，将数组向右旋转 k 个位置。旋转后，数组的最后 k 个元素会移动到数组的开头，其余元素依次向后移动。首先反转整个数组，使得数组的顺序完全颠倒。再反转前 k 个元素，使得它们恢复到正确的顺序。最后反转剩下的 n - k 个元素，使得它们恢复到正确的顺序
