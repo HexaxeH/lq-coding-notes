@@ -4042,3 +4042,28 @@ var lengthOfLongestSubstring = function(s) {
 ```
 
 ![image-20260201232153375](./top-100-liked.assets/image-20260201232153375.png)
+
+```javascript
+/**
+ * @param {number[][]} intervals
+ * @return {number[][]}
+ */
+var merge = function(intervals) {
+    intervals.sort((a, b) => a[0] - b[0]);
+    
+    const merged = [];
+    for (let i = 0; i < intervals.length; i++) {
+        const L = intervals[i][0];
+        const R = intervals[i][1];
+        
+        if (merged.length === 0 || merged[merged.length - 1][1] < L) {
+            merged.push([L, R]);
+        } else {
+            merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], R);
+        }
+    }
+    return merged;
+};
+```
+
+![image-20260210235130751](./top-100-liked.assets/image-20260210235130751.png)
