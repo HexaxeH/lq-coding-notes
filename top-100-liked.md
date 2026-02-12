@@ -1212,6 +1212,32 @@ private:
 
 ![image-20250922233424548](./top-100-liked.assets/image-20250922233424548.png)
 
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var rotate = function(nums, k) {
+    const n = nums.length;
+    k %= n;
+    // 三次反转实现旋转
+    reverse(nums, 0, n - 1);
+    reverse(nums, 0, k - 1);
+    reverse(nums, k, n - 1);
+};
+function reverse(nums, i, j) {
+    // 双指针交换，直到指针相遇
+    while (i < j) {
+        [nums[i], nums[j]] = [nums[j], nums[i]];
+        i++;
+        j--;
+    }
+}
+```
+
+![image-20260212232313103](./top-100-liked.assets/image-20260212232313103.png)
+
 #### [56. 合并区间](https://leetcode.cn/problems/merge-intervals/)
 
 思路：对所有区间按照「起始值」进行升序排序。排序后，区间的起始值呈现递增趋势，极大简化了重叠判断逻辑。初始化一个结果集合存储合并后的区间，然后逐个遍历排序后的区间，当前区间 [L,R] 与结果集最后区间比较，结果集空或 L > 最后区间结束值（无重叠），直接加入，否则（有重叠），合并（结束值取两者最大）。遍历完成后，结果集合中即为所有合并后的不重叠区间。
