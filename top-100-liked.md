@@ -1297,6 +1297,46 @@ public:
 
 ![image-20250926232023409](./top-100-liked.assets/image-20250926232023409.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var productExceptSelf = function(nums) {
+     const n = nums.length;
+    if (n === 1) {
+        return [1];
+    }
+
+    const answer = new Array(n);
+    const left = new Array(n); 
+    const right = new Array(n); 
+
+    left[0] = nums[0];
+    for (let i = 1; i < n; i++) {
+        left[i] = left[i - 1] * nums[i];
+    }
+
+    right[n - 1] = nums[n - 1];
+    for (let i = n - 2; i >= 0; i--) {
+        right[i] = right[i + 1] * nums[i];
+    }
+
+    answer[n - 1] = left[n - 2]; 
+    for (let i = n - 2; i >= 0; i--) {
+        if (i === 0) {
+            answer[i] = right[i + 1];
+            continue;
+        }
+        answer[i] = left[i - 1] * right[i + 1];
+    }
+    
+    return answer;
+};
+```
+
+![image-20260215230145224](./top-100-liked.assets/image-20260215230145224.png)
+
 #### [73. 矩阵置零](https://leetcode.cn/problems/set-matrix-zeroes/)
 
 思路： 使用两个标记数组去记录初始时0元素的位置，首先创建两个标记数组 `row_mark`（长度为矩阵行数 `m`）和 `column_mark`（长度为矩阵列数 `n`），用于分别记录原始矩阵中存在 0 的行和列；通过第一次遍历矩阵，若遇到元素 `matrix[i][j] == 0`，就将 `row_mark[i]` 和 `column_mark[j]` 设为 1，以此精准标记出所有需要置零的行与列；随后进行第二次遍历，对矩阵中的每个元素 `matrix[i][j]`，只要其所在行被标记（`row_mark[i] == 1`）或所在列被标记（`column_mark[j] == 1`），就将该元素设为 0，最终完成矩阵置零。
