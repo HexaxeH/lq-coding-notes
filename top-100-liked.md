@@ -3691,6 +3691,35 @@ public:
 
 ![image-20260114205406282](./top-100-liked.assets/image-20260114205406282.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var firstMissingPositive = function(nums) {
+    const n = nums.length;
+    for (let i = 0; i < n; i++) {
+        while (nums[i] !== i + 1) {
+            if (nums[i] <= 0 || nums[i] > n || nums[i] === nums[nums[i] - 1]) {
+                break;
+            }
+            const index = nums[i] - 1;
+            const temp = nums[i];
+            nums[i] = nums[index];
+            nums[index] = temp;
+        }
+    }
+    for (let i = 0; i < n; i++) {
+        if (nums[i] !== i + 1) {
+            return i + 1;
+        }
+    }
+    return n + 1;
+};
+```
+
+![image-20260220230915592](./top-100-liked.assets/image-20260220230915592.png)
+
 #### [84. 柱状图中最大的矩形](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
 
 思路：通过单调栈的单调性分别求解每个柱子左右两侧第一个高度更小的柱子下标，左侧柱子先从左到右遍历，利用栈弹出所有高度≥当前柱子的下标，确定左侧第一个更小柱子下标（left 数组）并将当前下标入栈；右侧柱子从右到左遍历，确定右侧第一个更小柱子下标（right 数组）；最后遍历每个柱子，以其高度为矩形高度、左右更小柱子下标间距减 1 为宽度计算面积，取所有面积的最大值即为结果。
