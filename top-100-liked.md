@@ -1376,6 +1376,37 @@ public:
 
 ![image-20250928000002665](./top-100-liked.assets/image-20250928000002665.png)
 
+```javascript
+/**
+ * @param {number[][]} matrix
+ * @return {void} Do not return anything, modify matrix in-place instead.
+ */
+var setZeroes = function(matrix) {
+    const m = matrix.length;
+    const n = matrix[0].length;
+    const row_mark = new Array(m);
+    const column_mark = new Array(n);
+    for(let i=0;i<m;i++){
+        for(let j=0;j<n;j++){
+            if( matrix[i][j] === 0){
+                row_mark[i]=1;
+                column_mark[j]=1;
+            }
+        }
+    }
+
+    for(let i=0;i<m;i++){
+        for(let j=0;j<n;j++){
+            if(row_mark[i]===1||column_mark[j]===1){
+                matrix[i][j] = 0;
+            }
+        }
+    }
+};
+```
+
+![image-20260308232957010](./top-100-liked.assets/image-20260308232957010.png)
+
 #### [54. 螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
 
 思路：
