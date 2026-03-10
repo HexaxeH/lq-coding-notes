@@ -1528,6 +1528,25 @@ public:
 
 ![image-20251003185925207](./top-100-liked.assets/image-20251003185925207.png)
 
+```js
+/**
+ * @param {number[][]} matrix
+ * @return {void} Do not return anything, modify matrix in-place instead.
+ */
+var rotate = function(matrix) {
+    for(let i=0;i<matrix.length;i++){
+        for(let j=i;j<matrix[0].length;j++){
+            [matrix[i][j],matrix[j][i]]=[matrix[j][i],matrix[i][j]];
+        }
+    }
+    for(let i=0;i<matrix.length;i++){
+        matrix[i].reverse();
+    }
+};
+```
+
+![image-20260310200535682](./top-100-liked.assets/image-20260310200535682.png)
+
 #### [240. 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/)
 
 思路：先获取矩阵的行数和列数，然后逐行遍历矩阵；对每一行，利用二分查找法（定义左右边界，通过计算中间位置并与目标值比较，动态调整边界范围）检查该行是否包含目标值，若找到则立即返回 true；若遍历完所有行仍未找到目标值，则返回 false。
