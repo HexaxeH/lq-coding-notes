@@ -1572,6 +1572,33 @@ public:
 
 ![image-20251005235351261](./top-100-liked.assets/image-20251005235351261.png)
 
+```javascript
+/**
+ * @param {number[][]} matrix
+ * @param {number} target
+ * @return {boolean}
+ */
+var searchMatrix = function(matrix, target) {
+    const m = matrix.length;
+    const n = matrix[0].length;
+    let i = 0;
+    let j = n-1;
+    while(i<m&&j>=0){
+        if(matrix[i][j]==target){
+            return true;
+        }
+        else if(matrix[i][j]<target){
+            i++;
+        }else{
+            j--;
+        }
+    }
+    return false;
+};
+```
+
+![image-20260311184343133](./top-100-liked.assets/image-20260311184343133.png)
+
 #### [142. 环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/)
 
 思路：双指针法，两次相遇定位环入口：
