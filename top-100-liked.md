@@ -194,6 +194,32 @@ public:
 
 ![image-20250904185402829](./top-100-liked.assets/image-20250904185402829.png)
 
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var reverseList = function(head) {
+    let pre = null, cur = head;
+    while (cur) {
+        const nxt = cur.next;
+        cur.next = pre; // 把 cur 插在 pre 链表的前面（头插法）
+        pre = cur;
+        cur = nxt;
+    }
+    return pre;
+};
+```
+
+![image-20260312235345464](./top-100-liked.assets/image-20260312235345464.png)
+
 #### [234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/)
 
 思路：通过尾插法复制原链表得到相同顺序的副本，再用头插法反转该副本得到逆序链表，最后比较原链表与逆序链表是否一致来判断是否为回文。
