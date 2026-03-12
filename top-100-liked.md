@@ -132,7 +132,32 @@ public:
 
 ![5642a075331e1ce4564899b0bdb8d34c](./top-100-liked.assets/5e3dc1c990f8c150df451810a6371cf4.png)
 
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
 
+/**
+ * @param {ListNode} headA
+ * @param {ListNode} headB
+ * @return {ListNode}
+ */
+var getIntersectionNode = function(headA, headB) {
+    let p = headA;
+    let q = headB;
+    while(p != q){
+        p=p?p.next : headB;
+        q=q?q.next : headA;
+    }
+    return p;
+};
+```
+
+![image-20260312233531380](./top-100-liked.assets/image-20260312233531380.png)
 
 #### [206. 反转链表](https://leetcode.cn/problems/reverse-linked-list/)
 
