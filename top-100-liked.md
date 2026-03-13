@@ -278,6 +278,44 @@ public:
 
 ![image-20250904191836610](./top-100-liked.assets/image-20250904191836610.png)
 
+```javascript
+
+function middleNode(head){
+    let slow = head,fast = head;
+    while(fast !== null && fast.next !== null){
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+}
+
+function reverseList(head){
+    let pre = null,cur = head;
+    while(cur != null){
+        const temp = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = temp;
+    }
+    return pre;
+}
+
+var isPalindrome = function(head) {
+    const mid = middleNode(head);
+    let head2 = reverseList(mid);
+    while (head2 !== null) {
+        if (head.val !== head2.val) {
+            return false;
+        }
+        head = head.next;
+        head2 = head2.next;
+    }
+    return true;
+};
+```
+
+![image-20260313212058804](./top-100-liked.assets/image-20260313212058804.png)
+
 #### [141. 环形链表](https://leetcode.cn/problems/linked-list-cycle/)
 
 思路：用哈希集合记录已访问节点，从表头开始遍历：若当前节点在集合中，说明有环；若不在，则加入集合并继续遍历下一个节点。visited.count()用于检查集合中是否存在指定元素
@@ -309,6 +347,34 @@ public:
 ```
 
 ![image-20250905171320554](./top-100-liked.assets/image-20250905171320554.png)
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var hasCycle = function(head) {
+    let slow = head, fast = head; 
+    while (fast && fast.next) {
+        slow = slow.next; 
+        fast = fast.next.next; 
+        if (fast === slow) { 
+            return true;
+        }
+    }
+    return false; 
+};
+```
+
+![image-20260313214150200](./top-100-liked.assets/image-20260313214150200.png)
 
 #### [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/)
 
