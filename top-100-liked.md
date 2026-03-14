@@ -421,7 +421,46 @@ public:
 
 ![image-20250905173107827](./top-100-liked.assets/image-20250905173107827.png)
 
-#### [94. 二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/)
+```c++
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} list1
+ * @param {ListNode} list2
+ * @return {ListNode}
+ */
+var mergeTwoLists = function(list1, list2) {
+    const dummy = new ListNode();
+    let newlist = dummy;
+    let p1 = list1;
+    let p2 = list2;
+    while(p1 !== null && p2 !== null){
+        if(p1.val <= p2.val){
+            newlist.next = p1;
+            p1 = p1.next;
+        } else{
+            newlist.next = p2;
+            p2 = p2.next;
+        }
+        newlist = newlist.next;
+    }
+    if(p1 !== null){
+        newlist.next = p1;
+    }else{
+        newlist.next = p2;
+    }
+    return dummy.next;
+};
+```
+
+
+
+#### ![image-20260314213016267](./top-100-liked.assets/image-20260314213016267.png)[94. 二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/)
 
 思路：采用递归方式实现中序遍历，按照左子树 、根节点 、右子树（中序遍历规则）访问节点，通过**引用传递**节点的值，直到为空节点。
 
@@ -1720,11 +1759,17 @@ var searchMatrix = function(matrix, target) {
 
 思路：双指针法，两次相遇定位环入口：
 
-1. **第一次相遇：检测是否有环**
+设链表共有 *a*+*b* 个节点，其中 **链表头部到链表入口** 有 *a* 个节点（不计链表入口节点）， **链表环** 有 *b* 个节点。
+
+由*f*=2*s*和*f*=*s*+*nb*得 *f*=2*nb*，*s*=*nb*
+
+**走到链表入口节点时的步数 （总步数）** 是：*k*=*a*+*nb*
+
+1. **第一次相遇：检测是否有环得  b的大小（环的大小）**
    - 初始化快慢指针 `fast` 和 `slow` 都指向头节点，`fast` 每次走 2 步，`slow` 每次走 1 步。
    - 若 `fast` 走到链表末尾（`fast` 或 `fast->next` 为 `nullptr`），说明无环，返回 `nullptr`。
    - 若 `fast` 与 `slow` 相遇，说明有环，进入下一步。
-2. **第二次相遇：定位环的入口**
+2. **第二次相遇：定位环的入口   **
    - 将 `fast` 重新指向头节点，`slow` 留在相遇点。
    - 两指针同时每次走 1 步，当它们再次相遇时，该节点就是环的入口，返回此节点。
 
@@ -1762,7 +1807,42 @@ public:
 
 ![image-20251007215502955](./top-100-liked.assets/image-20251007215502955.png)
 
-#### [2. 两数相加](https://leetcode.cn/problems/add-two-numbers/)
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var detectCycle = function(head) {
+    let fast = head;
+    let slow = head;
+    if (head === null || head.next === null) return null;
+    while(true){
+        if (fast === null || fast.next === null) return null;
+        fast = fast.next.next;
+        slow = slow.next;
+        if(fast == slow) break;
+    }
+    fast = head;
+    while(fast != slow){
+        fast = fast.next;
+        slow = slow.next;
+    }
+    return fast;
+
+};
+```
+
+
+
+#### ![image-20260314210400104](./top-100-liked.assets/image-20260314210400104.png)[2. 两数相加](https://leetcode.cn/problems/add-two-numbers/)
 
 思路：利用逆序链表（个位在前）的特点，模拟手动加法过程：  
 
