@@ -1888,6 +1888,42 @@ public:
 
 ![image-20251009233857661](./top-100-liked.assets/image-20251009233857661.png)
 
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+// l1 和 l2 为当前遍历的节点，carry 为进位
+var addTwoNumbers = function(l1, l2, carry = 0) {
+    if (l1 === null && l2 === null && carry === 0) { // 递归边界
+        return null;
+    }
+
+    let s = carry;
+    if (l1) {
+        s += l1.val; // 累加进位与节点值
+        l1 = l1.next;
+    }
+    if (l2) {
+        s += l2.val;
+        l2 = l2.next;
+    }
+
+    // s 除以 10 的余数为当前节点值，商为进位
+    return new ListNode(s % 10, addTwoNumbers(l1, l2, Math.floor(s / 10)));
+};
+```
+
+![image-20260315234518327](./top-100-liked.assets/image-20260315234518327.png)
+
 #### [19. 删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
 
 思路：通过计算链表长度确定待删除节点的位置，再执行删除操作。先创建值为 0 且 next 指向原链表头节点的虚拟头节点 dummy，接着遍历原链表统计总长度 length，然后让 cur 指针从 dummy 出发，向后移动 length-n 次以定位到待删除节点的前驱节点，随后通过 cur->next = cur->next->next 跳过待删除节点完成删除操作，最后保存 dummy->next 作为新链表头节点并释放 dummy 节点，最终返回新头节点。
