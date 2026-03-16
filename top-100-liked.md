@@ -1962,6 +1962,38 @@ public:
 
 ![image-20251012175541182](./top-100-liked.assets/image-20251012175541182.png)
 
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} n
+ * @return {ListNode}
+ */
+var removeNthFromEnd = function(head, n) {
+    // 由于可能会删除链表头部，用哨兵节点简化代码
+    const dummy = new ListNode(0, head);
+    let left = dummy;
+    let right = dummy;
+    while (n--) {
+        right = right.next; // 右指针先向右走 n 步
+    }
+    while (right.next) {
+        left = left.next;
+        right = right.next; // 左右指针一起走
+    }
+    left.next = left.next.next; // 左指针的下一个节点就是倒数第 n 个节点
+    return dummy.next;
+};
+```
+
+![image-20260316220110787](./top-100-liked.assets/image-20260316220110787.png)
+
 #### [24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/)
 
 思路：用递归思路实现链表节点的两两交换，核心是将问题拆解为重复的子问题：首先判断终止条件 —— 若链表为空或仅有一个节点，无需交换，直接返回；否则，将当前头两个节点视为一对，原第二个节点成为新头节点（newHead），通过递归处理这对节点之后的剩余链表，再将原第一个节点的 next 指向递归处理后的子链表，新头节点的 next 指向原第一个节点，完成当前对的交换，最终返回新头节点。如此逐层递归，从局部到整体完成整个链表的两两交换。
