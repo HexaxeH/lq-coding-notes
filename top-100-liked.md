@@ -2025,6 +2025,45 @@ public:
 
 ![image-20251013183519500](./top-100-liked.assets/image-20251013183519500.png)
 
+思路：用虚拟头节点简化头节点交换逻辑；
+
+每次交换仅调整 3 个指针（0→2、2→1、1→3），时间复杂度 O (n)；
+
+迭代推进指针，空间复杂度 O (1)（无额外空间）
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var swapPairs = function(head) {
+    let dummy = new ListNode(0);
+    dummy.next = head;
+    let node0 = dummy;
+    let node1 = head;
+    while(node1 && node1.next){
+        const node2 = node1.next;
+        const node3 = node2.next;
+        node0.next = node2;
+        node2.next = node1;
+        node1.next = node3;
+
+        node0 = node1;
+        node1 = node3; 
+    }
+    return dummy.next;
+};
+```
+
+![image-20260317204344847](./top-100-liked.assets/image-20260317204344847.png)
+
 [138. 随机链表的复制](https://leetcode.cn/problems/copy-list-with-random-pointer/)
 
 思路：通过哈希表实现带随机指针链表的复制，步骤清晰：首先遍历原链表，为每个节点创建值相同的新节点，并将原节点与新节点的对应关系存入哈希表；接着再次遍历原链表，借助哈希表快速找到每个新节点对应的 next 和 random 指针所指的新节点，完成新链表指针关系的构建；最后返回原链表头节点在哈希表中对应的新节点，即为复制链表的头节点。
@@ -2067,6 +2106,39 @@ public:
 ```
 
 ![image-20251014224020905](./top-100-liked.assets/image-20251014224020905.png)
+
+```javascript
+/**
+ * // Definition for a _Node.
+ * function _Node(val, next, random) {
+ *    this.val = val;
+ *    this.next = next;
+ *    this.random = random;
+ * };
+ */
+
+/**
+ * @param {_Node} head
+ * @return {_Node}
+ */
+var copyRandomList = function(head) {
+    let cur = head;
+    const map = new Map();
+    while(cur){
+        map.set(cur,new Node(cur.val));
+        cur = cur.next;
+    }
+    cur = head;
+    while(cur){
+        map.get(cur).next = map.get(cur.next)|| null;
+        map.get(cur).random = map.get(cur.random)|| null;
+        cur = cur.next;
+    }
+    return map.get(head || null);
+};
+```
+
+![image-20260317221307340](./top-100-liked.assets/image-20260317221307340.png)
 
 #### [148. 排序链表](https://leetcode.cn/problems/sort-list/)
 
