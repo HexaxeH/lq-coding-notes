@@ -495,6 +495,37 @@ public:
 
 ![image-20250906203945300](./top-100-liked.assets/image-20250906203945300.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var inorderTraversal = function(root) {
+     function dfs(node) {
+        if (node === null) {
+            return;
+        }
+        dfs(node.left);     // 左
+        ans.push(node.val); // 根
+        dfs(node.right);    // 右
+    }
+
+    const ans = [];
+    dfs(root);
+    return ans;
+};
+```
+
+![image-20260319190747162](./top-100-liked.assets/image-20260319190747162.png)
+
 #### [104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
 
 思路：使用深度优先搜索计算二叉树最大深度。以空节点深度为 0 作为终止条件，递归计算当前节点左右子树的最大深度，取两者中的最大值加 1（计入当前节点），即为当前节点所在子树的最大深度。从**叶子节点**逐层向上叠加，最终得到整棵树的最大深度。
