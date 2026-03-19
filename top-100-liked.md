@@ -2203,6 +2203,66 @@ public:
 
 ![image-20251019141316267](./top-100-liked.assets/image-20251019141316267.png)
 
+
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+// 876. 链表的中间结点
+function middleNode(head) {
+    let pre = head, slow = head, fast = head;
+    while (fast && fast.next) {
+        pre = slow; // 记录 slow 的前一个节点
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    pre.next = null; // 断开 slow 的前一个节点和 slow 的连接
+    return slow;
+}
+
+// 21. 合并两个有序链表（双指针）
+function mergeTwoLists(list1, list2) {
+    const dummy = new ListNode(); 
+    let cur = dummy; 
+    while (list1 && list2) {
+        if (list1.val < list2.val) {
+            cur.next = list1;
+            list1 = list1.next;
+        } else {
+            cur.next = list2;
+            list2 = list2.next;
+        }
+        cur = cur.next;
+    }
+    cur.next = list1 ?? list2;
+    return dummy.next;
+}
+
+var sortList = function(head) {
+    if (head === null || head.next === null) {
+        return head;
+    }
+
+    let head2 = middleNode(head);
+    // 分治
+    head = sortList(head);
+    head2 = sortList(head2);
+    // 合并
+    return mergeTwoLists(head, head2);
+};
+```
+
+![image-20260319175818106](./top-100-liked.assets/image-20260319175818106.png)
+
 #### [146. LRU 缓存](https://leetcode.cn/problems/lru-cache/)
 
 思路：根据 LRU 描述，我们至少需要一个数据结构来存节点的新旧程度，新的放一边，老的放另一边，双向链表恰好合适。但链表更新快，却无法快速通过 key 查节点，因此结合字典（哈希表）：字典存 `key=>节点` 的映射，实现定位；双向链表维护使用顺序，最新访问 / 插入的节点放在头部（靠近 `head` 哨兵），最久未使用的节点落到尾部（`head` 的前驱）。
