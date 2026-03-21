@@ -556,6 +556,31 @@ public:
 
 ![image-20250906210653308](./top-100-liked.assets/image-20250906210653308.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxDepth = function(root) {
+    if (root === null) {
+        return 0;
+    }
+    const lDepth = maxDepth(root.left);
+    const rDepth = maxDepth(root.right);
+    return Math.max(lDepth, rDepth) + 1;
+};
+```
+
+![image-20260321134435933](./top-100-liked.assets/image-20260321134435933.png)
+
 #### [226. 翻转二叉树](https://leetcode.cn/problems/invert-binary-tree/)
 
 思路：采用**递归**思路，先判断当前节点是否为空，若为空则直接返回；否则递归翻转当前节点的左子树和右子树，然后交换当前节点的左右子树指针，最终返回处理后的当前节点，从而实现整棵二叉树的翻转。
@@ -588,6 +613,34 @@ public:
 ```
 
 ![image-20250907161532588](./top-100-liked.assets/image-20250907161532588.png)
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+var invertTree = function(root) {
+    if(root == null){
+        return null;
+    }
+    let left = invertTree(root.left);
+    let right = invertTree(root.right);
+    root.left = right;
+    root.right = left;
+
+    return root;
+};
+```
+
+![image-20260321135143861](./top-100-liked.assets/image-20260321135143861.png)
 
 #### [101. 对称二叉树](https://leetcode.cn/problems/symmetric-tree/)
 
