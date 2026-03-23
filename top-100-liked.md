@@ -680,6 +680,32 @@ public:
 
 ![image-20250907163254849](./top-100-liked.assets/image-20250907163254849.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isSymmetric = function(root) {
+    var isSameTree = function(p,q){
+        if(p === null || q === null){
+            return p === q;
+        }
+        return p.val === q.val && isSameTree(p.left,q.right) && isSameTree(p.right,q.left);
+    }
+    return isSameTree(root.left, root.right);
+};
+```
+
+![image-20260321224348442](./top-100-liked.assets/image-20260321224348442.png)
+
 #### [543. 二叉树的直径](https://leetcode.cn/problems/diameter-of-binary-tree/)
 
 思路：遍历所有节点，算出每个节点的 "左段长度 + 右段长度"，其中最大的那个值就是整个树的直径。通过递归的方式，一边计算每个节点往下能伸多远（深度），一边把左右两段加起来和当前最大直径比一比，更新最大的那个值。
