@@ -744,6 +744,42 @@ public:
 
 ![image-20250908181201727](./top-100-liked.assets/image-20250908181201727.png)
 
+
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var diameterOfBinaryTree = function(root) {
+    let ans = 0;
+    if(root == null){
+        return 0;
+    }
+    function dfs(node) {
+        if (node === null) {
+            return -1; // 对于叶子来说，链长就是 -1+1=0
+        }
+        const lLen = dfs(node.left) + 1; 
+        const rLen = dfs(node.right) + 1; 
+        ans = Math.max(ans, lLen + rLen); // 两条链拼成路径
+        return Math.max(lLen, rLen); // 当前子树最大链长
+    }
+    dfs(root);
+    return ans;
+};
+```
+
+![image-20260323214633998](./top-100-liked.assets/image-20260323214633998.png)
+
 #### [108. 将有序数组转换为二叉搜索树](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
 
 思路：以**二分法**选取数组中间元素作为当前子树的根节点（保证左右子树平衡），再**递归**地用同样方法将中间元素左侧数组构建为左子树、右侧数组构建为右子树，最终形成满足 “左小右大” 特性且左右高度差不超过 1 的平衡二叉搜索树。
