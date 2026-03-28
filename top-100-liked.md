@@ -2547,6 +2547,46 @@ public:
 
 ![image-20251024232403434](./top-100-liked.assets/image-20251024232403434.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+    if(root === null){
+        return [];
+    }
+    const ans = [];
+    let cur = [root];//当前层的所有节点
+    while(cur.length){
+        const nxt = [];//下一层节点
+        const vals = [];//本层所有节点的值
+        for(const node of cur ){
+            vals.push(node.val);
+            if(node.left){
+                nxt.push(node.left);
+            }
+            if(node.right){
+                nxt.push(node.right);
+            }
+        }
+        cur = nxt;//替换到下一层
+        ans.push(vals);
+    }
+    return ans;
+};
+```
+
+![image-20260328121942303](./top-100-liked.assets/image-20260328121942303.png)
+
 #### [98. 验证二叉搜索树](https://leetcode.cn/problems/validate-binary-search-tree/)
 
 思路：通过二叉搜索树“中序遍历结果为严格递增序列” 的特性解题：先对二叉树进行中序遍历（左→根→右），将所有节点值存入`vector`容器（`result`）；再遍历储节点值，若存在任意后一元素≤前一元素，则树无效，反之则有效。
