@@ -816,6 +816,38 @@ public:
 
 ![image-20250908195547418](./top-100-liked.assets/image-20250908195547418.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {number[]} nums
+ * @return {TreeNode}
+ */
+var sortedArrayToBST = function(nums) {
+    function dfs (nums, left, right){
+        if(left > right){
+            return null;
+        }
+        const mid = Math.floor((left + right)/2);
+        const root = new TreeNode(nums[mid]);
+        root.left = dfs(nums,left,mid-1);
+        root.right = dfs(nums,mid+1,right);
+        return root;
+    }
+    return dfs(nums,0,nums.length-1);
+};
+//思路：选取中间位置的数做根节点方便搭建天然二叉树
+//然后开始构建二叉树，左边数当左子树，右边数做右子树；
+```
+
+![image-20260328131608334](./top-100-liked.assets/image-20260328131608334.png)
+
 #### [35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/)
 
 思路：通过二分查找：先用左右指针分别指向数组的起始和末尾，然后在左右指针未交叉（left ≤ right）的循环中，不断计算中间位置 mid，将数组中间元素与目标值对比： 若中间元素小于目标值，说明目标值在 mid 右侧，将 left 移至 mid+1；若中间元素大于等于目标值，说明目标值在 mid 左侧或就是 mid，将 right 移至 mid-1。当循环结束时，left 指针恰好停在**第一个大于等于目标值的位置**，这个位置就是目标值插入后能保持数组有序的正确位置，直接返回 left 即可。
