@@ -3904,6 +3904,28 @@ public:
 
 ![image-20260104175409300](./top-100-liked.assets/image-20260104175409300.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+ // 用dp数组记录第n个数时的可以拿到的最大值；
+ // 因为不能相邻的拿，所以计算第n个dp[n]时需要比较是用dp[i-1]跳过本次大，还是用dp[i-2]加上本次大
+var rob = function(nums) {
+    if(nums.length == 0) return 0;
+    if(nums.length == 1) return nums[0];
+    const dp = [];
+    dp[0] = nums[0];
+    dp[1] = Math.max(dp[0],nums[1]);
+    for(let i = 2;i<nums.length;i++){
+        dp[i] = Math.max(dp[i-1],dp[i-2]+nums[i]);
+    }
+    return dp[nums.length-1];
+};
+```
+
+![image-20260328153841507](./top-100-liked.assets/image-20260328153841507.png)
+
 #### [279. 完全平方数](https://leetcode.cn/problems/perfect-squares/)
 
 思路：完全背包问题的变形，完全平方数是可重复选取的“物品”，目标整数`n`是“背包容量”，解题核心是用动态规划求最少“物品数”；接着定义`dp[i]`表示组成整数`i`的最小完全平方数个数，创建长度为`n+1`的`dp`数组并初始化为`INT_MAX`，设置`dp[0]=0`作为边界条件；然后遍历所有不大于`√n`的正整数`num`（对应`num*num`这个完全平方数），再正序遍历0到`n`的整数`i`，当`i≥num*num`时，用`dp[i-num*num]+1`更新`dp[i]`的最小值；最终`dp[n]`就是所求答案。
