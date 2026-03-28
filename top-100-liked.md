@@ -2662,6 +2662,38 @@ public:
 
 ![image-20251027190900147](./top-100-liked.assets/image-20251027190900147.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+ /**
+注意是左子树的节点的值全部小于根节点，右节点全部大于根节点，
+所以要限制递归时传递值的所在范围
+ */
+var isValidBST = function(root) {
+    function dfs (root,low,hight){
+        if (!root) return true;
+        if(root.val > low && root.val < hight){
+            return dfs(root.left,low,root.val) && dfs(root.right,root.val,hight);
+        }else{
+            return false;
+        }
+    }
+    return dfs(root,-Infinity,Infinity);
+};
+```
+
+![image-20260328142231394](./top-100-liked.assets/image-20260328142231394.png)
+
 #### [230. 二叉搜索树中第 K 小的元素](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/)
 
 思路：在上一题得二叉搜索树具有一个重要性质：二叉搜索树的中序遍历为递增序列。也就是说，本题可被转化为求中序遍历的第 k 个节点。递归遍历时计数，统计当前节点的序号。递归到第 k 个节点时，记录结果 res 后提前返回。即可找到的第 k 小元素。
