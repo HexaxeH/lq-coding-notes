@@ -2736,6 +2736,41 @@ public:
 
 ![image-20251029221219998](./top-100-liked.assets/image-20251029221219998.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} k
+ * @return {number}
+ */
+//  注意是给定一个二叉搜索树：节点大小=左 < 根 < 右 
+//所以用中序遍历以左、根、右顺序访问，就是从小到大
+//   1. 先一直往【左】走，走到空为止
+//   2. 回头【访问自己】，k-1
+//      如果 k == 0，这就是答案！
+//   3. 最后往【右】走一步
+var kthSmallest = function(root, k) {
+    let ans = 0;
+    function dfs(node){
+        if(node === null || k<=0) return;
+        dfs(node.left);
+        if(--k === 0) ans = node.val;
+        dfs(node.right);
+    }
+    dfs(root);
+    return ans;
+};
+```
+
+![image-20260328151920180](./top-100-liked.assets/image-20260328151920180.png)
+
 #### [199. 二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/)
 
 思路：实现二叉树的右视图，只需在层序遍历的基础上，将每一层的最后一个元素加入结果数组。通过队列存储各层节点，每次处理一层时，先记录当前层的节点总数，然后依次遍历该层的每个节点，将其左右子节点加入队列以准备下一层的遍历。在遍历当前层的过程中，当遇到该层的最后一个节点（即索引等于当前层节点总数减 1 的节点）时，其值就是该层从右侧能看到的节点值，将其加入结果数组。最终，遍历完所有层后，结果数组便包含了从右侧观察二叉树时依次看到的各层节点值，即二叉树的右视图。
