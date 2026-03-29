@@ -2812,6 +2812,41 @@ public:
 
 ![image-20251101173021670](./top-100-liked.assets/image-20251101173021670.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+//利用层序遍历（利用数组nxt记录下一层的节点），再每一层push当前层cur中最后的数据
+var rightSideView = function(root) {
+    if(root === null){
+        return [];
+    }
+    const ans = [];
+    let cur = [root];
+    while(cur.length){
+        ans.push(cur[cur.length-1].val);
+        const nxt = [];
+        for(const node of cur){
+            if(node.left) nxt.push(node.left);
+            if(node.right) nxt.push(node.right);
+        }
+        cur = nxt;
+    }
+    return ans;
+};
+```
+
+![image-20260329202650639](./top-100-liked.assets/image-20260329202650639.png)
+
 #### [114. 二叉树展开为链表](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/)
 
 思路：
