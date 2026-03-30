@@ -2889,6 +2889,45 @@ public:
 
 ![image-20251103200549209](./top-100-liked.assets/image-20251103200549209.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {void} Do not return anything, modify root in-place instead.
+ */
+var flatten = function(root) {
+    if (!root) return;
+    let prev = null;
+    function dfs(node) {
+        if (!node) return;
+        // 前序遍历：先处理当前节点
+        // 保存左右子树
+        const left = node.left;
+        const right = node.right;
+        // 如果是第一个节点（根），prev 为 null，否则连接 prev -> node
+        if (prev) {
+            prev.left = null;
+            prev.right = node;
+        }
+        prev = node;
+        // 递归处理左子树，再右子树（前序：根左右）
+        dfs(left);
+        dfs(right);
+    }
+
+    dfs(root);
+};
+```
+
+![image-20260330220714063](./top-100-liked.assets/image-20260330220714063.png)
+
 #### [105. 从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
 思路：利用前序遍历（根 - 左 - 右）和中序遍历（左 - 根 - 右）的特性。每一次都先通过**前序遍历（preorder）**确定当前根节点（第一个元素必然是当前树的**根节点**），再划分左右子树的遍历序列，在**中序遍历（inorder）**中根据preorder中找到的根节划分左右子树（inorder根节点左侧的所有元素是**左子树的中序序列**，右侧是**右子树的中序序列**），还可计算左子树的节点个数，以此划分左右子树，递归构建左右子树，每次生成当前根节点并返回。
