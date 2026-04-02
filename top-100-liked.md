@@ -3042,6 +3042,41 @@ public:
 
 ![image-20251107233103761](./top-100-liked.assets/image-20251107233103761.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {number}
+ */
+var pathSum = function(root, targetSum) {
+    const cnt = new Map();
+    const target = targetSum;
+    cnt.set(0,1);
+    function dfs(node,currentSum){
+        if(!node) return 0;
+        currentSum += node.val;
+        let res = cnt.get(currentSum - target) || 0;
+        cnt.set(currentSum,(cnt.get(currentSum)||0)+1);
+        res += dfs(node.left,currentSum);
+        res += dfs(node.right, currentSum);
+        cnt.set(currentSum, cnt.get(currentSum) - 1);
+
+        return res;
+    }
+    return dfs(root, 0);
+};
+```
+
+![image-20260402210921448](./top-100-liked.assets/image-20260402210921448.png)
+
 #### [236. 二叉树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
 
 思路：首先进行先序遍历，从根节点出发依次访问当前节点、左子树、右子树，遇到空节点直接返回空（无目标节点）；若遇到节点 p 或 q，直接返回该节点（标记目标节点的存在，无需继续向下遍历）。之后开始从底至顶**回溯**，通过左右子树的返回结果判断当前节点是否满足公共祖先 LCA 的三种场景：
