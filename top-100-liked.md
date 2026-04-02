@@ -2964,6 +2964,43 @@ public:
 
 ![image-20251105182000259](./top-100-liked.assets/image-20251105182000259.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {number[]} preorder
+ * @param {number[]} inorder
+ * @return {TreeNode}
+ */
+var buildTree = function(preorder, inorder) {
+    const n = preorder.length;
+    const index = new Map();
+    for(let i = 0;i<n;i++){
+        index.set(inorder[i],i);
+    }
+
+    function dfs(preL, preR, inL){
+        if(preL === preR){
+            return null;
+        }
+        const leftSize = index.get(preorder[preL]) - inL; // 左子树的大小
+        const left = dfs(preL + 1, preL + 1 + leftSize, inL);
+        const right = dfs(preL + 1 + leftSize, preR, inL + 1 + leftSize);
+        return new TreeNode(preorder[preL], left, right);
+    }
+
+    return dfs(0, n, 0); 
+};
+```
+
+![image-20260402194224170](./top-100-liked.assets/image-20260402194224170.png)
+
 #### [437. 路径总和 III](https://leetcode.cn/problems/path-sum-iii/)
 
 思路：遍历二叉树时，用哈希表实时统计从根节点到当前路径上各前缀和的出现次数。对每个节点，计算其前缀和`s`后，通过哈希表查询`s - targetSum`的出现次数，即可得以此节点为终点的有效路径数；遍历完节点的左右子树后，从哈希表中移除当前前缀和（回溯），确保哈希表仅包含当前路径上的前缀和。累加所有节点对应的有效路径数，即为最终结果。
