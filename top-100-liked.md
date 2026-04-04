@@ -3119,6 +3119,36 @@ public:
 
 ![image-20251111195140154](./top-100-liked.assets/image-20251111195140154.png)
 
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
+ */
+var lowestCommonAncestor = function(root, p, q) {
+    if (root === null || root === p || root === q) {
+        return root; 
+    }
+    const left = lowestCommonAncestor(root.left,p,q);
+    const right = lowestCommonAncestor(root.right,p,q);
+    // 如果只有左子树找到，就返回左子树的返回值
+    if(left === null) return right;
+    // 如果只有右子树找到，就返回右子树的返回值
+    if(right === null) return left;
+    return root;
+};
+```
+
+![image-20260404111257676](./top-100-liked.assets/image-20260404111257676.png)
+
 #### [200. 岛屿数量](https://leetcode.cn/problems/number-of-islands/)
 
 思路：
