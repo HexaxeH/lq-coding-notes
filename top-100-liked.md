@@ -3389,6 +3389,34 @@ private:
 
 ![image-20251123232505435](./top-100-liked.assets/image-20251123232505435.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permute = function(nums) {
+ const res = [];
+    dfs(nums, 0);
+    return res;
+
+    function dfs(nums, x) {
+        // 递归终止：固定到最后一位
+        if (x === nums.length - 1) {
+            res.push([...nums]); 
+            return;
+        }
+        
+        for (let i = x; i < nums.length; i++) {
+            [nums[i], nums[x]] = [nums[x], nums[i]]; // 交换
+            dfs(nums, x + 1);
+            [nums[i], nums[x]] = [nums[x], nums[i]]; 
+        }
+    }
+};
+```
+
+![image-20260406125511376](./top-100-liked.assets/image-20260406125511376.png)
+
 #### [78. 子集](https://leetcode.cn/problems/subsets/)
 
 思路：子集是 “所有可能的元素组合（含空集）”，用回溯遍历 “选当前元素” 和 “不选当前元素” 两种分支，全程收集路径即得所有子集。
