@@ -3446,6 +3446,35 @@ public:
 
 ![image-20251125234521863](./top-100-liked.assets/image-20251125234521863.png)
 
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsets = function(nums) {
+    const n = nums.length;
+    const ans = []
+    const path = []
+    function dfs(i) {
+        if (i === n) {
+            ans.push(path.slice());
+            return;
+        }
+        
+        // 不选 nums[i]
+        dfs(i + 1);
+        // 选 nums[i]
+        path.push(nums[i]);
+        dfs(i + 1); // 考虑下一个数 nums[i+1] 选或不选
+        path.pop(); // 恢复现场，撤销 path.push(nums[i])
+    }
+    dfs(0);
+    return ans;
+};
+```
+
+![image-20260406153600980](./top-100-liked.assets/image-20260406153600980.png)
+
 #### [17. 电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
 
 思路：**通过深度优先搜索（DFS）结合回溯法，遍历所有可能的字母组合**：借助预定义的数字 - 字母映射表，从第一个数字开始，为每个数字依次选取其对应的字母填入路径，递归处理下一位数字；当路径长度等于数字串长度时，即生成一个完整组合并保存；遍历完当前数字的所有字母后自动回溯，继续探索其他组合可能，最终穷举所有合法的字母组合。
