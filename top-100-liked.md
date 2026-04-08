@@ -3512,6 +3512,39 @@ public:
 
 ![image-20251125234907691](./top-100-liked.assets/image-20251125234907691.png)
 
+```javascript
+/**
+ * @param {string} digits
+ * @return {string[]}
+ */
+ const MAPPING = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"];
+
+var letterCombinations = function(digits) {
+    const n = digits.length;
+    if (n === 0) {
+        return [];
+    }
+    const path = Array(n);
+    const ans = [];
+    function dfs(i){
+        if(i === n){
+            ans.push(path.join(""));
+            return;
+        }
+        const letters = MAPPING[Number(digits[i])];
+        for(const c of letters){
+            path[i] = c;
+            dfs(i+1);
+        }
+
+    }
+    dfs(0);
+    return ans;
+};
+```
+
+![image-20260408220547784](./top-100-liked.assets/image-20260408220547784.png)
+
 #### [39. 组合总和](https://leetcode.cn/problems/combination-sum/)
 
 思路：枚举所有可能的组合，但需要避免重复组合。
