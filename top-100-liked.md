@@ -3595,6 +3595,41 @@ public:
 
 ![image-20251127225718081](./top-100-liked.assets/image-20251127225718081.png)
 
+```javascript
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum = function(candidates, target) {
+    const ans = []; // 存储最终结果
+    const path = []; // 存储当前搜索路径
+
+    function dfs(i, left) {
+        if (left === 0) {
+            ans.push([...path]); 
+            return;
+        }
+        if (i === candidates.length || left < 0) {
+            return;
+        }
+
+        // 不选
+        dfs(i + 1, left);
+
+        // 选
+        path.push(candidates[i]);
+        dfs(i, left - candidates[i]);
+        path.pop(); // 回溯：撤销选择
+    }
+
+    dfs(0, target);
+    return ans;
+};
+```
+
+![image-20260411235029948](./top-100-liked.assets/image-20260411235029948.png)
+
 #### [22. 括号生成](https://leetcode.cn/problems/generate-parentheses/)
 
 思路：枚举当前位置填左括号还是右括号，递归的过程中，要保证右括号的个数不能超过左括号的个数。如果现在右括号个数等于左括号个数，那么不能填右括号。如果现在右括号个数小于左括号个数，那么可以填右括号。由于左括号个数始终 ≥ 左括号个数，所以当我们填了 n 个右括号时，也一定填了 n 个左括号，此时填完所有 2n 个括号。
