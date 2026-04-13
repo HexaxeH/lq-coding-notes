@@ -3664,6 +3664,39 @@ public:
 
 ![image-20251201221745068](./top-100-liked.assets/image-20251201221745068.png)
 
+```javascript
+/**
+ * @param {number} n
+ * @return {string[]}
+ */
+var generateParenthesis = function(n) {
+    const ans = []; // 存储最终结果
+    const path = []; // 存储当前搜索路径
+
+    function dfs(left,right) {
+        if (right === n) {
+            ans.push(path.join('')); 
+            return;
+        }
+        if (left < n) {
+            path[left + right] = '(';
+            dfs(left + 1, right);
+        }
+
+        if (right < left) { 
+            path[left + right] = ')'; // 直接覆盖
+            dfs(left, right + 1);
+        }
+
+    }
+
+    dfs(0, 0);
+    return ans;
+};
+```
+
+![image-20260413193537810](./top-100-liked.assets/image-20260413193537810.png)
+
 #### [79. 单词搜索](https://leetcode.cn/problems/word-search/)
 
 思路：先遍历矩阵每个单元格作为 DFS 起点，对每个起点通过递归探索上下左右四个方向，递归中先校验当前矩阵字符是否与目标字符串对应位置匹配，若匹配且已到字符串末尾则匹配成功，若未到末尾则将当前单元格标记为已访问（避免重复使用）后继续探索四方向，若所有方向探索失败则回溯恢复当前单元格原字符（不影响后续起点探索），只要任一起点的 DFS 找到完整匹配路径就返回 true，所有起点均失败则返回 false。
