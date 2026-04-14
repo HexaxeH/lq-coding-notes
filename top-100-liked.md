@@ -3739,6 +3739,62 @@ public:
 
 ![image-20251204213901659](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251204213901659.png)
 
+```javascript
+/**
+ * @param {character[][]} board
+ * @param {string} word
+ * @return {boolean}
+ */
+var exist = function(board, word) {
+    const cnt = new Map();
+    for (const row of board) {
+        for (const c of row) {
+            cnt.set(c, (cnt.get(c) ?? 0) + 1);
+        }
+    }
+
+    const wordCnt = new Map();
+    for (const c of word) {
+        wordCnt.set(c, (wordCnt.get(c) ?? 0) + 1);
+        if (wordCnt.get(c) > (cnt.get(c) ?? 0)) {
+            return false;
+        }
+    }
+
+    if ((cnt.get(word[word.length - 1]) ?? 0) < (cnt.get(word[0]) ?? 0)) {
+        word = word.split('').reverse();
+    }
+
+    const m = board.length, n = board[0].length;
+    function dfs(i, j, k) {
+        if (board[i][j] !== word[k]) {
+            return false; // 匹配失败
+        }
+        if (k + 1 === word.length) {
+            return true; // 匹配成功！
+        }
+        board[i][j] = 0; // 标记访问过
+        for (const [x, y] of [[i, j - 1], [i, j + 1], [i - 1, j], [i + 1, j]]) { // 相邻格子
+            if (0 <= x && x < m && 0 <= y && y < n && dfs(x, y, k + 1)) {
+                return true; // 搜到了！
+            }
+        }
+        board[i][j] = word[k]; // 恢复现场
+        return false; // 没搜到
+    }
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (dfs(i, j, 0)) {
+                return true; // 搜到了！
+            }
+        }
+    }
+    return false; // 没搜到
+};
+```
+
+![image-20260414211626637](./top-100-liked.assets/image-20260414211626637.png)
+
 [131. 分割回文串](https://leetcode.cn/problems/palindrome-partitioning/)
 
 思路：先枚举每个字符间的「分割 / 不分割」选择，从字符串起始位置开始，DFS 递归处理每个字符，若选择「不分割」则继续处理下一个字符且保持当前子串起始位置不变；若选择「分割」，则先校验当前子串是否为回文（双指针法实现回文子串校验辅助函数），若是则将该子串加入当前分割路径，再从下一个字符开始新的子串匹配，处理完后续字符后回溯移除当前子串以尝试其他分割方案；当递归处理完所有字符时，说明当前路径是合法的分割方案，将其加入结果集，最终返回所有合法分割方案。
