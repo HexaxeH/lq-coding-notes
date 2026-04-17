@@ -3847,6 +3847,49 @@ public:
 
 ![image-20251204232514144](D:\code\LeetCodeRecord\top-100-liked.assets\image-20251204232514144.png)
 
+```javascript
+/**
+ * @param {string} s
+ * @return {string[][]}
+ */
+//双指针判断 [left,right] 子串是否回文
+var isPalindrome = function(s, left, right){
+    while(left<right){
+        if(s.charAt(left++) !== s.charAt(right--)){
+            return false;
+        }
+    }
+    return true;
+}
+
+var partition = function(s) {
+    const n = s.length; 
+    const ans = [];    
+    const path = []; 
+    function dfs(i, start) {
+        if (i === n) { 
+            ans.push(path.slice()); 
+            return;
+        }
+        //不分割
+         if (i < n - 1) { 
+            dfs(i + 1, start); 
+        }
+        //分割
+        if (isPalindrome(s, start, i)) { //// 判断子串 [start, i] 是不是回文串
+            // 把回文子串加入
+            path.push(s.substring(start, i + 1)); 
+            dfs(i + 1, i + 1); 
+            path.pop(); // 回溯
+        }
+    }
+    dfs(0, 0); 
+    return ans;
+};
+```
+
+![image-20260417220044122](./top-100-liked.assets/image-20260417220044122.png)
+
 #### [74. 搜索二维矩阵](https://leetcode.cn/problems/search-a-2d-matrix/)
 
 思路：先确定矩阵的行数 `m` 和列数 `n`，把整个矩阵看作长度为 `m*n` 的一维有序数组，设置二分查找的左边界 `left=0`、右边界 `right=m*n-1`；在循环中计算中间下标 `mid`，利用 `mid/n` 得到二维矩阵中的行下标、`mid%n` 得到列下标，从而取出对应位置的元素与目标值比较，若元素等于目标值则直接返回 `true`，若元素大于目标值则调整右边界缩小到左半区间，若元素小于目标值则调整左边界缩小到右半区间；当循环结束（`left>right`）仍未找到目标值时，返回 `false`。
