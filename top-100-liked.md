@@ -872,6 +872,28 @@ public:
 
 ![image-20250909200447462](./top-100-liked.assets/image-20250909200447462.png)
 
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var searchInsert = function(nums, target) {
+    let left = 0, right = nums.length - 1; // 闭区间 [left, right]
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        if (nums[mid] < target) {
+            left = mid + 1; //[mid+1, right]
+        } else {
+            right = mid - 1; //[left, mid-1]
+        }
+    }
+    return left;
+};
+```
+
+![image-20260419200105380](./top-100-liked.assets/image-20260419200105380.png)
+
 #### [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/)
 
 思路：用栈来匹配括号：遍历字符串时，遇到左括号（'(', '[', '{'）就暂时存到栈里；遇到右括号时，就检查栈顶是否有对应的左括号（比如 ')' 对应 '(', '}' 对应 '{'），如果没有对应左括号或栈为空（没左括号可匹配），就说明无效；如果匹配上了，就把栈顶的左括号移除。最后如果栈空了，说明所有括号都正确配对，返回有效；否则无效。
